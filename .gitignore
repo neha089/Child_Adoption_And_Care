@@ -1,1 +1,5 @@
 .vs/
+CAC/obj/Debug/*.cache
+CAC/obj/Release/*.cache
+*.mdf
+*.ldf
