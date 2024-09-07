@@ -67,13 +67,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\Database1.mdf" />
-    <Content Include="App_Data\Database1_log.ldf">
-      <DependentUpon>Database1.mdf</DependentUpon>
+    <Content Include="App_Data\Db1.mdf" />
+    <Content Include="App_Data\Db1_log.ldf">
+      <DependentUpon>Db1.mdf</DependentUpon>
     </Content>
+    <Content Include="Crud\admin_crud.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Crud\admin_crud.aspx.cs">
+      <DependentUpon>admin_crud.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Crud\admin_crud.aspx.designer.cs">
+      <DependentUpon>admin_crud.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
