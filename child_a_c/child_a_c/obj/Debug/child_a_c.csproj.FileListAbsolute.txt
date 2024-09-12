@@ -1,0 +1,2 @@
+C:\Users\Yogesh Patel\source\repos\child_a_c\child_a_c\obj\Debug\child_a_c.csproj.AssemblyReference.cache
+C:\Users\Yogesh Patel\source\repos\child_a_c\child_a_c\obj\Debug\child_a_c.csproj.CoreCompileInputs.cache
