@@ -71,18 +71,25 @@
     <Content Include="App_Data\Database1_log.ldf">
       <DependentUpon>Database1.mdf</DependentUpon>
     </Content>
-    <Content Include="Crud\admin_crud.aspx" />
+    <Content Include="Crud\Admin_crud.aspx" />
     <Content Include="Crud\AdopterCrud.aspx" />
+    <Content Include="Crud\AdopterDocument.aspx" />
+    <Content Include="Crud\AdoptionRecord.aspx" />
+    <Content Include="Crud\ApplicationRecords.aspx" />
     <Content Include="Crud\ChildCrud.aspx" />
+    <Content Include="Crud\ChildDocuments.aspx" />
+    <Content Include="Crud\HomeStudies.aspx" />
+    <Content Include="Crud\OrphanageDocument.aspx" />
+    <Content Include="Crud\Orphanages_crud.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Crud\admin_crud.aspx.cs">
-      <DependentUpon>admin_crud.aspx</DependentUpon>
+    <Compile Include="Crud\Admin_crud.aspx.cs">
+      <DependentUpon>Admin_crud.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Crud\admin_crud.aspx.designer.cs">
-      <DependentUpon>admin_crud.aspx</DependentUpon>
+    <Compile Include="Crud\Admin_crud.aspx.designer.cs">
+      <DependentUpon>Admin_crud.aspx</DependentUpon>
     </Compile>
     <Compile Include="Crud\AdopterCrud.aspx.cs">
       <DependentUpon>AdopterCrud.aspx</DependentUpon>
@@ -91,12 +98,61 @@
     <Compile Include="Crud\AdopterCrud.aspx.designer.cs">
       <DependentUpon>AdopterCrud.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Crud\AdopterDocument.aspx.cs">
+      <DependentUpon>AdopterDocument.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Crud\AdopterDocument.aspx.designer.cs">
+      <DependentUpon>AdopterDocument.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Crud\AdoptionRecord.aspx.cs">
+      <DependentUpon>AdoptionRecord.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Crud\AdoptionRecord.aspx.designer.cs">
+      <DependentUpon>AdoptionRecord.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Crud\ApplicationRecords.aspx.cs">
+      <DependentUpon>ApplicationRecords.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Crud\ApplicationRecords.aspx.designer.cs">
+      <DependentUpon>ApplicationRecords.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Crud\ChildCrud.aspx.cs">
       <DependentUpon>ChildCrud.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Crud\ChildCrud.aspx.designer.cs">
       <DependentUpon>ChildCrud.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Crud\ChildDocuments.aspx.cs">
+      <DependentUpon>ChildDocuments.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Crud\ChildDocuments.aspx.designer.cs">
+      <DependentUpon>ChildDocuments.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Crud\HomeStudies.aspx.cs">
+      <DependentUpon>HomeStudies.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Crud\HomeStudies.aspx.designer.cs">
+      <DependentUpon>HomeStudies.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Crud\OrphanageDocument.aspx.cs">
+      <DependentUpon>OrphanageDocument.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Crud\OrphanageDocument.aspx.designer.cs">
+      <DependentUpon>OrphanageDocument.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Crud\Orphanages_crud.aspx.cs">
+      <DependentUpon>Orphanages_crud.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Crud\Orphanages_crud.aspx.designer.cs">
+      <DependentUpon>Orphanages_crud.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
