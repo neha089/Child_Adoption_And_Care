@@ -88,15 +88,9 @@
       <DependentUpon>AdopterCrud.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Crud\AdopterCrud.aspx.designer.cs">
-      <DependentUpon>AdopterCrud.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Crud\ChildCrud.aspx.cs">
       <DependentUpon>ChildCrud.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Crud\ChildCrud.aspx.designer.cs">
-      <DependentUpon>ChildCrud.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
