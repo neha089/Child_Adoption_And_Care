@@ -108,14 +108,14 @@ namespace CAC.Crud
                 init();
                 using (con)
                 {
-                    retrieveById(); 
+                    retrieveById();
 
                     if (dt != null && dt.Rows.Count > 0)
                     {
                         DataRow row = dt.Rows[0];
                         row["username"] = TextBox2.Text;
 
-                        
+
                         if (da != null && ds != null)
                         {
                             da.Update(ds, "Admins");
@@ -143,7 +143,7 @@ namespace CAC.Crud
                 init();
                 using (con)
                 {
-                    retrieveById();  
+                    retrieveById();
                     int id = 0;
                     if (string.IsNullOrEmpty(TextBox1.Text))
                     {
@@ -178,7 +178,7 @@ namespace CAC.Crud
                 Response.Write("Error in deletion: " + ex.Message);
             }
         }
-       
+
         protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
         {
         }
