@@ -1,2 +1,4 @@
 C:\Users\Yogesh Patel\source\repos\child_a_c\child_a_c\obj\Debug\child_a_c.csproj.AssemblyReference.cache
 C:\Users\Yogesh Patel\source\repos\child_a_c\child_a_c\obj\Debug\child_a_c.csproj.CoreCompileInputs.cache
+C:\Users\jiyap\OneDrive\Desktop\Child_Adoption_And_Care\child_a_c\child_a_c\obj\Debug\child_a_c.csproj.AssemblyReference.cache
+C:\Users\jiyap\OneDrive\Desktop\Child_Adoption_And_Care\child_a_c\child_a_c\obj\Debug\child_a_c.csproj.CoreCompileInputs.cache

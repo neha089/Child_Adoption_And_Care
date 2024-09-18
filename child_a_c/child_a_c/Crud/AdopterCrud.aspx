@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Adopters.aspx.cs" Inherits="YourNamespace.Adopters" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="AdopterCrud.aspx.cs" Inherits="child_a_c.AdopterCrud" %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">

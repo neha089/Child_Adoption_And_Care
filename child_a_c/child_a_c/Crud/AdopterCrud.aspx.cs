@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
@@ -8,7 +8,7 @@ namespace CAC.Crud
 {
     public partial class adopters_crud : System.Web.UI.Page
     {
-        string connectionString = ConfigurationManager.ConnectionStrings["Con_Db1"].ConnectionString;
+        string connectionString = ConfigurationManager.ConnectionStrings["CACCon"].ConnectionString;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -64,23 +64,33 @@ namespace CAC.Crud
         {
             int id = Convert.ToInt32(GridViewAdopters.DataKeys[e.RowIndex].Value.ToString());
             GridViewRow row = GridViewAdopters.Rows[e.RowIndex];
-            string firstName = ((TextBox)row.Cells[1].Controls[0]).Text;
-            string lastName = ((TextBox)row.Cells[2].Controls[0]).Text;
 
-            using (SqlConnection con = new SqlConnection(connectionString))
+            // Use FindControl to get the TextBox from the TemplateField
+            TextBox txtFirstName = (TextBox)row.FindControl("txtFirstName");
+            TextBox txtLastName = (TextBox)row.FindControl("txtLastName");
+
+            if (txtFirstName != null && txtLastName != null)
             {
-                SqlCommand cmd = new SqlCommand("UPDATE Adopters SET first_name=@FirstName, last_name=@LastName WHERE adopter_id=@Id", con);
-                cmd.Parameters.AddWithValue("@FirstName", firstName);
-                cmd.Parameters.AddWithValue("@LastName", lastName);
-                cmd.Parameters.AddWithValue("@Id", id);
+                string firstName = txtFirstName.Text;
+                string lastName = txtLastName.Text;
 
-                con.Open();
-                cmd.ExecuteNonQuery();
-                con.Close();
-                GridViewAdopters.EditIndex = -1;
-                BindGrid();
+                using (SqlConnection con = new SqlConnection(connectionString))
+                {
+                    SqlCommand cmd = new SqlCommand("UPDATE Adopters SET first_name=@FirstName, last_name=@LastName WHERE adopter_id=@Id", con);
+                    cmd.Parameters.AddWithValue("@FirstName", firstName);
+                    cmd.Parameters.AddWithValue("@LastName", lastName);
+                    cmd.Parameters.AddWithValue("@Id", id);
+
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    con.Close();
+
+                    GridViewAdopters.EditIndex = -1;
+                    BindGrid();
+                }
             }
         }
+
 
         protected void GridViewAdopters_RowDeleting(object sender, System.Web.UI.WebControls.GridViewDeleteEventArgs e)
         {
