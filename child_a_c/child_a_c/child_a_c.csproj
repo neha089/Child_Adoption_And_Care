@@ -80,6 +80,7 @@
   <ItemGroup>
     <Compile Include="Crud\admin_crud.aspx.cs">
       <DependentUpon>admin_crud.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Crud\admin_crud.aspx.designer.cs">
       <DependentUpon>admin_crud.aspx</DependentUpon>
@@ -90,9 +91,11 @@
     </Compile>
     <Compile Include="Crud\ChildCrud.aspx.cs">
       <DependentUpon>ChildCrud.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Crud\OrphanageCrud.aspx.cs">
       <DependentUpon>OrphanageCrud.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Crud\OrphanageCrud.aspx.designer.cs">
       <DependentUpon>OrphanageCrud.aspx</DependentUpon>
