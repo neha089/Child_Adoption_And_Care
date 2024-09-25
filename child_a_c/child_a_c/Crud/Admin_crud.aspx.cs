@@ -1,201 +1,122 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using System.Data;
-using System.Configuration;
 using System.Data.SqlClient;
-using System.Web.Configuration;
+using System.Configuration;
+using System.Web.UI.WebControls;
 
-namespace CAC.Crud
+namespace Crud
 {
-    public partial class admin_crud : System.Web.UI.Page
+    public partial class Adopters : System.Web.UI.Page
     {
-        SqlConnection con;
-        DataSet ds;
-        DataTable dt;
-        SqlDataAdapter da;
-        SqlCommandBuilder builder;
-
-        void init()
-        {
-            con = new SqlConnection();
-            con.ConnectionString = WebConfigurationManager.ConnectionStrings["Con_Db1"].ConnectionString;
-        }
+        string connectionString = ConfigurationManager.ConnectionStrings["Con1"].ConnectionString;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                Label1.Text = "Enter id";
-                retrieve();
+                BindGridView();
             }
         }
 
-        void retrieve()
+        protected void btnAdd_Click(object sender, EventArgs e)
         {
-            try
+            using (SqlConnection con = new SqlConnection(connectionString))
             {
-                init();
-                using (con)
-                {
-                    string command = "Select * from Admins";
-                    SqlCommand cmd = new SqlCommand(command, con);
-                    con.Open();
-                    SqlDataReader rdr = cmd.ExecuteReader();
-                    GridView1.DataSource = rdr;
-                    GridView1.DataBind();
-                    rdr.Close();
-                }
-            }
-            catch (Exception ex)
-            {
-                Response.Write("Error in fetching: " + ex.Message);
+                con.Open();
+                SqlCommand cmd = new SqlCommand("INSERT INTO Adopters (first_name, last_name, date_of_birth, address, phone_number, email, marital_status, occupation, education_level) VALUES (@FirstName, @LastName, @DOB, @Address, @Phone, @Email, @MaritalStatus, @Occupation, @Education)", con);
+                cmd.Parameters.AddWithValue("@FirstName", txtFirstName.Text);
+                cmd.Parameters.AddWithValue("@LastName", txtLastName.Text);
+                cmd.Parameters.AddWithValue("@DOB", Convert.ToDateTime(txtDateOfBirth.Text));
+                cmd.Parameters.AddWithValue("@Address", txtAddress.Text);
+                cmd.Parameters.AddWithValue("@Phone", txtPhoneNumber.Text);
+                cmd.Parameters.AddWithValue("@Email", txtEmail.Text);
+                cmd.Parameters.AddWithValue("@MaritalStatus", txtMaritalStatus.Text);
+                cmd.Parameters.AddWithValue("@Occupation", txtOccupation.Text);
+                cmd.Parameters.AddWithValue("@Education", txtEducationLevel.Text);
+
+                cmd.ExecuteNonQuery();
+                BindGridView();
             }
         }
 
-        void retrieveById()
+        protected void btnUpdate_Click(object sender, EventArgs e)
         {
-            try
+            using (SqlConnection con = new SqlConnection(connectionString))
             {
-                init();
-                using (con)
-                {
-                    string command = "Select * from Admins where admin_id = ISNULL(@Id,1)";
-                    SqlCommand cmd = new SqlCommand(command, con);
-                    if (string.IsNullOrEmpty(TextBox1.Text))
-                    {
-                        cmd.Parameters.AddWithValue("@Id", DBNull.Value);
-                    }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue("@Id", TextBox1.Text);
-                    }
-                    con.Open();
-                    ds = new DataSet();
-                    da = new SqlDataAdapter(cmd);
-                    builder = new SqlCommandBuilder(da);
-                    da.Fill(ds, "Admins");
-                    dt = ds.Tables["Admins"];
-                }
-            }
-            catch (Exception ex)
-            {
-                Response.Write("Error in fetching by id: " + ex.Message);
+                con.Open();
+                SqlCommand cmd = new SqlCommand("UPDATE Adopters SET first_name=@FirstName, last_name=@LastName, date_of_birth=@DOB, address=@Address, phone_number=@Phone, email=@Email, marital_status=@MaritalStatus, occupation=@Occupation, education_level=@Education WHERE adopter_id=@AdopterID", con);
+                cmd.Parameters.AddWithValue("@AdopterID", Convert.ToInt32(txtAdopterId.Text));
+                cmd.Parameters.AddWithValue("@FirstName", txtFirstName.Text);
+                cmd.Parameters.AddWithValue("@LastName", txtLastName.Text);
+                cmd.Parameters.AddWithValue("@DOB", Convert.ToDateTime(txtDateOfBirth.Text));
+                cmd.Parameters.AddWithValue("@Address", txtAddress.Text);
+                cmd.Parameters.AddWithValue("@Phone", txtPhoneNumber.Text);
+                cmd.Parameters.AddWithValue("@Email", txtEmail.Text);
+                cmd.Parameters.AddWithValue("@MaritalStatus", txtMaritalStatus.Text);
+                cmd.Parameters.AddWithValue("@Occupation", txtOccupation.Text);
+                cmd.Parameters.AddWithValue("@Education", txtEducationLevel.Text);
+
+                cmd.ExecuteNonQuery();
+                BindGridView();
             }
         }
 
-        void getById()
+        protected void btnDelete_Click(object sender, EventArgs e)
         {
-            retrieveById();
-            if (dt != null && dt.Rows.Count > 0)
+            using (SqlConnection con = new SqlConnection(connectionString))
             {
-                GridView2.DataSource = dt;
-                GridView2.DataBind();
-            }
-            else
-            {
-                Response.Write("No data found for the given id.");
+                con.Open();
+                SqlCommand cmd = new SqlCommand("DELETE FROM Adopters WHERE adopter_id=@AdopterID", con);
+                cmd.Parameters.AddWithValue("@AdopterID", Convert.ToInt32(txtAdopterId.Text));
+                cmd.ExecuteNonQuery();
+                BindGridView();
             }
         }
 
-        void UpdateById(object sender, EventArgs e)
+        protected void btnClear_Click(object sender, EventArgs e)
         {
-            try
+            ClearFields();
+        }
+
+        private void ClearFields()
+        {
+            txtAdopterId.Text = "";
+            txtFirstName.Text = "";
+            txtLastName.Text = "";
+            txtDateOfBirth.Text = "";
+            txtAddress.Text = "";
+            txtPhoneNumber.Text = "";
+            txtEmail.Text = "";
+            txtMaritalStatus.Text = "";
+            txtOccupation.Text = "";
+            txtEducationLevel.Text = "";
+        }
+
+        private void BindGridView()
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
             {
-                init();
-                using (con)
-                {
-                    retrieveById();
-
-                    if (dt != null && dt.Rows.Count > 0)
-                    {
-                        DataRow row = dt.Rows[0];
-                        row["username"] = TextBox2.Text;
-
-
-                        if (da != null && ds != null)
-                        {
-                            da.Update(ds, "Admins");
-                        }
-
-                        GridView3.DataSource = dt;
-                        GridView3.DataBind();
-                    }
-                    else
-                    {
-                        Response.Write("Row not found for updation");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Response.Write("Error in updation: " + ex.Message);
+                SqlDataAdapter sda = new SqlDataAdapter("SELECT * FROM Adopters", con);
+                DataTable dt = new DataTable();
+                sda.Fill(dt);
+                gvAdopters.DataSource = dt;
+                gvAdopters.DataBind();
             }
         }
 
-        void DeleteById(object sender, EventArgs e)
+        protected void gvAdopters_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
-            {
-                init();
-                using (con)
-                {
-                    retrieveById();
-                    int id = 0;
-                    if (string.IsNullOrEmpty(TextBox1.Text))
-                    {
-                        Response.Write("Please enter id which you want to delete");
-                    }
-                    else
-                    {
-                        id = int.Parse(TextBox1.Text);
-                    }
-
-                    if (dt != null)
-                    {
-                        DataRow row = dt.AsEnumerable().FirstOrDefault(r => r.Field<int>("admin_id") == id);
-                        if (row != null)
-                        {
-                            row.Delete();
-                            Label2.Text = "Deleted successfully";
-                            if (da != null && ds != null)
-                            {
-                                da.Update(ds, "Admins");
-                            }
-                        }
-                        else
-                        {
-                            Label2.Text = "Row not found";
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Response.Write("Error in deletion: " + ex.Message);
-            }
-        }
-
-        protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-        }
-
-        protected void Button1_Click(object sender, EventArgs e)
-        {
-            DeleteById(sender, e);
-        }
-
-        protected void Button2_Click(object sender, EventArgs e)
-        {
-            UpdateById(sender, e);
-        }
-
-        protected void Button3_Click(object sender, EventArgs e)
-        {
-            getById();
+            GridViewRow row = gvAdopters.SelectedRow;
+            txtAdopterId.Text = row.Cells[1].Text;
+            txtFirstName.Text = row.Cells[2].Text;
+            txtLastName.Text = row.Cells[3].Text;
+            txtDateOfBirth.Text = row.Cells[4].Text;
+            txtAddress.Text = row.Cells[5].Text;
+            txtPhoneNumber.Text = row.Cells[6].Text;
+            txtEmail.Text = row.Cells[7].Text;
+            txtMaritalStatus.Text = row.Cells[8].Text;
+            txtOccupation.Text = row.Cells[9].Text;
+            txtEducationLevel.Text = row.Cells[10].Text;
         }
     }
 }

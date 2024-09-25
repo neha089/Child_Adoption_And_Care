@@ -7,11 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace child_a_c.Crud
+namespace Crud
 {
 
 
-    public partial class AdopterDocument
+    public partial class AdopterDocuments
     {
 
         /// <summary>
