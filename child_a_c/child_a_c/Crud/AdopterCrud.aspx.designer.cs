@@ -7,11 +7,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CAC.Crud
+namespace Crud
 {
 
-
-    public partial class adopters_crud
+    public partial class Adopters_crud
     {
 
         /// <summary>
@@ -22,6 +21,7 @@ namespace CAC.Crud
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        protected global::System.Web.UI.WebControls.GridView gvChildren;
 
         /// <summary>
         /// GridViewAdopters control.
@@ -30,7 +30,6 @@ namespace CAC.Crud
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView GridViewAdopters;
 
         /// <summary>
         /// btnAddNew control.
@@ -48,6 +47,9 @@ namespace CAC.Crud
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
+       
+        protected global::System.Web.UI.WebControls.TextBox txtAdopterId;
+
         protected global::System.Web.UI.WebControls.TextBox txtFirstName;
 
         /// <summary>
@@ -66,7 +68,7 @@ namespace CAC.Crud
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDOB;
+        protected global::System.Web.UI.WebControls.TextBox txtDateOfBirth;
 
         /// <summary>
         /// txtAddress control.
@@ -112,6 +114,8 @@ namespace CAC.Crud
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtOccupation;
+        protected global::System.Web.UI.WebControls.TextBox lblMessage;
+        protected global::System.Web.UI.WebControls.TextBox lblError;
 
         /// <summary>
         /// txtEducationLevel control.

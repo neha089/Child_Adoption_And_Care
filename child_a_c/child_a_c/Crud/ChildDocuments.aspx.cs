@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace child_a_c.Crud
+namespace Crud
 {
     public partial class ChildDocuments : System.Web.UI.Page
     {

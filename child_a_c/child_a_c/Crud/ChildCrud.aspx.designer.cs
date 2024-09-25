@@ -7,11 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CAC
+namespace Crud
 {
 
 
-    public partial class ChildCrud
+    public partial class Children
     {
 
         /// <summary>
@@ -22,6 +22,7 @@ namespace CAC
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        protected global::System.Web.UI.WebControls.GridView gvChildren;
 
         /// <summary>
         /// tbchildid control.
@@ -30,7 +31,7 @@ namespace CAC
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbchildid;
+        protected global::System.Web.UI.WebControls.TextBox txtChildID;
 
         /// <summary>
         /// tbfirstname control.
@@ -39,7 +40,7 @@ namespace CAC
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbfirstname;
+        protected global::System.Web.UI.WebControls.TextBox txtFirstName;
 
         /// <summary>
         /// tblastname control.
@@ -48,7 +49,7 @@ namespace CAC
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tblastname;
+        protected global::System.Web.UI.WebControls.TextBox txtLastName;
 
         /// <summary>
         /// tbdob control.
@@ -57,7 +58,7 @@ namespace CAC
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbdob;
+        protected global::System.Web.UI.WebControls.TextBox txtDateOfBirth;
 
         /// <summary>
         /// female control.
@@ -66,6 +67,8 @@ namespace CAC
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtGender;
+
         protected global::System.Web.UI.WebControls.RadioButtonList female;
 
         /// <summary>
@@ -76,6 +79,9 @@ namespace CAC
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButtonList male;
+        protected global::System.Web.UI.WebControls.TextBox txtOrphanageID;
+
+        protected global::System.Web.UI.WebControls.TextBox txtAdopterID;
 
         /// <summary>
         /// tbmh control.

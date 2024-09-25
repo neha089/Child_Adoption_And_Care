@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ApplicationRecords.aspx.cs" Inherits="child_a_c.Crud.ApplicationRecords" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="ApplicationRecords.aspx.cs" Inherits="Crud.ApplicationRecords" %>
 
 <!DOCTYPE html>
 
@@ -32,7 +32,7 @@
         <asp:TextBox ID="txtChildID" runat="server" /><br />
 
         <asp:Label Text="Application Date:" runat="server" />
-        <asp:TextBox ID="txtApplicationDate" runat="server" /><br />
+        <asp:TextBox ID="txtApplicationDate" runat="server" TextMode="Date"/><br />
 
         <asp:Label Text="Status:" runat="server" />
         <asp:TextBox ID="txtStatus" runat="server" /><br />

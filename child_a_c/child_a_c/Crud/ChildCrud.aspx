@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Children.aspx.cs" Inherits="Children" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="ChildCrud.aspx.cs" Inherits="Crud.Children" %>
 
 <!DOCTYPE html>
 <html>
@@ -33,7 +33,7 @@
         <asp:TextBox ID="txtLastName" runat="server" /><br />
 
         <asp:Label Text="Date of Birth:" runat="server" />
-        <asp:TextBox ID="txtDateOfBirth" runat="server" /><br />
+        <asp:TextBox ID="txtDateOfBirth" runat="server" TextMode="Date" /><br />
 
         <asp:Label Text="Gender:" runat="server" />
         <asp:TextBox ID="txtGender" runat="server" /><br />
