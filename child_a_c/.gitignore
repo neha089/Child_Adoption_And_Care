@@ -1,4 +1,9 @@
-.vs/
+# Ignore debug and project-specific cache files
+child_a_c/obj/Debug/
+../.vs/
+../.vs/Child_Adoption_And_Care/
+../.vs/ProjectSettings.json
+
 # Ignore MDF files
 *.mdf
 *.ldf
