@@ -67,14 +67,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\Db1.mdf" />
-    <Content Include="App_Data\Db1_log.ldf">
-      <DependentUpon>Db1.mdf</DependentUpon>
+    <Content Include="App_Data\Database1.mdf" />
+    <Content Include="App_Data\Database1_log.ldf">
+      <DependentUpon>Database1.mdf</DependentUpon>
     </Content>
     <Content Include="Crud\admin_crud.aspx" />
     <Content Include="Crud\AdopterCrud.aspx" />
     <Content Include="Crud\ChildCrud.aspx" />
+    <Content Include="Crud\Login.aspx" />
     <Content Include="Crud\OrphanageCrud.aspx" />
+    <Content Include="Crud\Signup.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -87,11 +89,16 @@
     </Compile>
     <Compile Include="Crud\AdopterCrud.aspx.cs">
       <DependentUpon>AdopterCrud.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Crud\ChildCrud.aspx.cs">
       <DependentUpon>ChildCrud.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Crud\Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Crud\Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
     <Compile Include="Crud\OrphanageCrud.aspx.cs">
       <DependentUpon>OrphanageCrud.aspx</DependentUpon>
@@ -99,6 +106,13 @@
     </Compile>
     <Compile Include="Crud\OrphanageCrud.aspx.designer.cs">
       <DependentUpon>OrphanageCrud.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Crud\Signup.aspx.cs">
+      <DependentUpon>Signup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Crud\Signup.aspx.designer.cs">
+      <DependentUpon>Signup.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
