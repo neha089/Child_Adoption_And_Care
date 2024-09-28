@@ -67,10 +67,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\Db1.mdf" />
-    <Content Include="App_Data\Db1_log.ldf">
-      <DependentUpon>Db1.mdf</DependentUpon>
-    </Content>
     <Content Include="Crud\admin_crud.aspx" />
     <Content Include="Crud\AdopterCrud.aspx" />
     <Content Include="Crud\ChildCrud.aspx" />
@@ -110,6 +106,9 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Data.SqlClient;
 using System.Configuration;
-using System.Web.UI.WebControls;
+using System.Web.UI.WebControls; // Add this line
+using child_a_c.Crud;
 
-namespace Crud
+namespace child_a_c.Crud
 {
     public partial class ApplicationRecords : System.Web.UI.Page
     {
@@ -17,7 +18,7 @@ namespace Crud
 
         private void LoadApplicationRecords()
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["Con1"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["Database1"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 SqlCommand cmd = new SqlCommand("SELECT * FROM ApplicationRecords", conn);
@@ -39,7 +40,7 @@ namespace Crud
 
         protected void btnSave_Click(object sender, EventArgs e)
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["Database1"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 SqlCommand cmd;

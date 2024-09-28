@@ -1,64 +1,54 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="admin_Crud.aspx.cs" Inherits="Crud.Adopters" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="admin_crud.aspx.cs" Inherits="child_a_c.Crud.admin_crud" %>
 
 <!DOCTYPE html>
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>Adopter Management</title>
-    <link rel="stylesheet" type="text/css" href="Styles.css" /> <!-- Optional: Link to your CSS file -->
+    <title>Admin Management</title>
 </head>
 <body>
     <form id="form1" runat="server">
         <div>
-            <h2>Adopter Management</h2>
-            <asp:Label ID="lblAdopterId" runat="server" Text="Adopter ID:" AssociatedControlID="txtAdopterId"></asp:Label>
-            <asp:TextBox ID="txtAdopterId" runat="server" ReadOnly="true"></asp:TextBox><br />
-
-            <asp:Label ID="lblFirstName" runat="server" Text="First Name:" AssociatedControlID="txtFirstName"></asp:Label>
-            <asp:TextBox ID="txtFirstName" runat="server"></asp:TextBox><br />
-
-            <asp:Label ID="lblLastName" runat="server" Text="Last Name:" AssociatedControlID="txtLastName"></asp:Label>
-            <asp:TextBox ID="txtLastName" runat="server"></asp:TextBox><br />
-
-            <asp:Label ID="lblDateOfBirth" runat="server" Text="Date of Birth:" AssociatedControlID="txtDateOfBirth"></asp:Label>
-            <asp:TextBox ID="txtDateOfBirth" runat="server"></asp:TextBox><br />
-
-            <asp:Label ID="lblAddress" runat="server" Text="Address:" AssociatedControlID="txtAddress"></asp:Label>
-            <asp:TextBox ID="txtAddress" runat="server"></asp:TextBox><br />
-
-            <asp:Label ID="lblPhoneNumber" runat="server" Text="Phone Number:" AssociatedControlID="txtPhoneNumber"></asp:Label>
-            <asp:TextBox ID="txtPhoneNumber" runat="server"></asp:TextBox><br />
-
-            <asp:Label ID="lblEmail" runat="server" Text="Email:" AssociatedControlID="txtEmail"></asp:Label>
-            <asp:TextBox ID="txtEmail" runat="server"></asp:TextBox><br />
-
-            <asp:Label ID="lblMaritalStatus" runat="server" Text="Marital Status:" AssociatedControlID="txtMaritalStatus"></asp:Label>
-            <asp:TextBox ID="txtMaritalStatus" runat="server"></asp:TextBox><br />
-
-            <asp:Label ID="lblOccupation" runat="server" Text="Occupation:" AssociatedControlID="txtOccupation"></asp:Label>
-            <asp:TextBox ID="txtOccupation" runat="server"></asp:TextBox><br />
-
-            <asp:Label ID="lblEducationLevel" runat="server" Text="Education Level:" AssociatedControlID="txtEducationLevel"></asp:Label>
-            <asp:TextBox ID="txtEducationLevel" runat="server"></asp:TextBox><br />
-
-            <asp:Button ID="btnAdd" runat="server" Text="Add" OnClick="btnAdd_Click" />
-            <asp:Button ID="btnUpdate" runat="server" Text="Update" OnClick="btnUpdate_Click" />
-            <asp:Button ID="btnDelete" runat="server" Text="Delete" OnClick="btnDelete_Click" />
-            <asp:Button ID="btnClear" runat="server" Text="Clear" OnClick="btnClear_Click" /><br /><br />
-
-            <asp:GridView ID="gvAdopters" runat="server" AutoGenerateColumns="False" OnSelectedIndexChanged="gvAdopters_SelectedIndexChanged">
+            <h2>Manage Admins</h2>
+            <asp:GridView ID="gvAdmins" runat="server" AutoGenerateColumns="False" OnSelectedIndexChanged="gvAdmins_SelectedIndexChanged">
                 <Columns>
-                    <asp:BoundField DataField="adopter_id" HeaderText="Adopter ID" />
-                    <asp:BoundField DataField="first_name" HeaderText="First Name" />
-                    <asp:BoundField DataField="last_name" HeaderText="Last Name" />
-                    <asp:BoundField DataField="date_of_birth" HeaderText="Date of Birth" />
-                    <asp:BoundField DataField="address" HeaderText="Address" />
-                    <asp:BoundField DataField="phone_number" HeaderText="Phone Number" />
+                    <asp:BoundField DataField="admin_id" HeaderText="Admin ID" />
+                    <asp:BoundField DataField="username" HeaderText="Username" />
                     <asp:BoundField DataField="email" HeaderText="Email" />
-                    <asp:BoundField DataField="marital_status" HeaderText="Marital Status" />
-                    <asp:BoundField DataField="occupation" HeaderText="Occupation" />
-                    <asp:BoundField DataField="education_level" HeaderText="Education Level" />
+                    <asp:BoundField DataField="role" HeaderText="Role" />
+                    <asp:CommandField ShowSelectButton="True" />
                 </Columns>
             </asp:GridView>
+
+            <h3>Admin Details</h3>
+            <asp:Label Text="Admin ID:" runat="server" />
+            <asp:TextBox ID="txtAdminID" runat="server" ReadOnly="true" /><br />
+
+            <asp:Label Text="Username:" runat="server" />
+            <asp:TextBox ID="txtUsername" runat="server" /><br />
+
+            <asp:Label Text="Password:" runat="server" />
+            <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" /><br />
+
+            <asp:Label Text="First Name:" runat="server" />
+            <asp:TextBox ID="txtFirstName" runat="server" /><br />
+
+            <asp:Label Text="Last Name:" runat="server" />
+            <asp:TextBox ID="txtLastName" runat="server" /><br />
+
+            <asp:Label Text="Email:" runat="server" />
+            <asp:TextBox ID="txtEmail" runat="server" /><br />
+
+            <asp:Label Text="Phone Number:" runat="server" />
+            <asp:TextBox ID="txtPhoneNumber" runat="server" /><br />
+
+            <asp:Label Text="Role:" runat="server" />
+            <asp:TextBox ID="txtRole" runat="server" /><br />
+
+            <asp:Label Text="Status:" runat="server" />
+            <asp:TextBox ID="txtStatus" runat="server" /><br />
+
+            <asp:Button ID="btnSave" runat="server" Text="Save" OnClick="btnSave_Click" />
         </div>
     </form>
 </body>

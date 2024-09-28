@@ -8,34 +8,74 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Crud
+namespace child_a_c.Crud
 {
-    public partial class Adopters
+
+
+    public partial class admin_crud
     {
-        protected global::System.Web.UI.WebControls.Label lblAdopterId;
-        protected global::System.Web.UI.WebControls.TextBox txtAdopterId;
-        protected global::System.Web.UI.WebControls.Label lblFirstName;
-        protected global::System.Web.UI.WebControls.TextBox txtFirstName;
-        protected global::System.Web.UI.WebControls.Label lblLastName;
-        protected global::System.Web.UI.WebControls.TextBox txtLastName;
-        protected global::System.Web.UI.WebControls.Label lblDateOfBirth;
-        protected global::System.Web.UI.WebControls.TextBox txtDateOfBirth;
-        protected global::System.Web.UI.WebControls.Label lblAddress;
-        protected global::System.Web.UI.WebControls.TextBox txtAddress;
-        protected global::System.Web.UI.WebControls.Label lblPhoneNumber;
-        protected global::System.Web.UI.WebControls.TextBox txtPhoneNumber;
-        protected global::System.Web.UI.WebControls.Label lblEmail;
+
+        /// <summary>
+        /// form1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+
+        /// <summary>
+        /// gvAdmins control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvAdmins;
+
+        /// <summary>
+        /// txtAdminID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtAdminID;
+
+        /// <summary>
+        /// txtUsername control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtUsername;
+
+        /// <summary>
+        /// txtEmail control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtEmail;
-        protected global::System.Web.UI.WebControls.Label lblMaritalStatus;
-        protected global::System.Web.UI.WebControls.TextBox txtMaritalStatus;
-        protected global::System.Web.UI.WebControls.Label lblOccupation;
-        protected global::System.Web.UI.WebControls.TextBox txtOccupation;
-        protected global::System.Web.UI.WebControls.Label lblEducationLevel;
-        protected global::System.Web.UI.WebControls.TextBox txtEducationLevel;
-        protected global::System.Web.UI.WebControls.Button btnAdd;
-        protected global::System.Web.UI.WebControls.Button btnUpdate;
-        protected global::System.Web.UI.WebControls.Button btnDelete;
-        protected global::System.Web.UI.WebControls.Button btnClear;
-        protected global::System.Web.UI.WebControls.GridView gvAdopters;
+
+        /// <summary>
+        /// txtRole control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtRole;
+
+        /// <summary>
+        /// btnSave control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnSave;
     }
 }

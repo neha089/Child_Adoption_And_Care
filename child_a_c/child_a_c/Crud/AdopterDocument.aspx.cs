@@ -3,11 +3,13 @@ using System.Data.SqlClient;
 using System.Configuration;
 using System.Web.UI.WebControls;
 using System.Xml.Linq;
-namespace Crud
+
+namespace child_a_c.Crud
 {
-    public partial class AdopterDocuments : System.Web.UI.Page
+    public partial class AdopterDocument : System.Web.UI.Page
     {
-        protected void Page_Load(object sender, EventArgs e)
+
+    protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
@@ -17,7 +19,7 @@ namespace Crud
 
         private void LoadAdopterDocuments()
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["Con1"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["Database1"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 SqlCommand cmd = new SqlCommand("SELECT * FROM AdopterDocuments", conn);
@@ -40,26 +42,7 @@ namespace Crud
 
         protected void btnSave_Click(object sender, EventArgs e)
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["Con1"].ConnectionString;
-
-            // Check if the Adopter ID exists
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                SqlCommand checkAdopterCmd = new SqlCommand("SELECT COUNT(*) FROM Adopters WHERE adopter_id = @AdopterID", conn);
-                checkAdopterCmd.Parameters.AddWithValue("@AdopterID", txtAdopterID.Text);
-
-                conn.Open();
-                int count = (int)checkAdopterCmd.ExecuteScalar();
-
-                if (count == 0)
-                {
-                    // Adopter ID does not exist, handle accordingly
-                    // e.g., show a message or throw an exception
-                    ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Adopter ID does not exist. Please check and try again.');", true);
-                    return;
-                }
-            }
-
+            string connectionString = ConfigurationManager.ConnectionStrings["Database1"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 SqlCommand cmd;
@@ -84,6 +67,5 @@ namespace Crud
                 LoadAdopterDocuments();
             }
         }
-
     }
 }

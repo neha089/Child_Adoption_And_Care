@@ -1,6 +1,7 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="AdopterCrud.aspx.cs" Inherits="Crud.Adopters_crud" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true"  CodeFile="AdopterCrud.aspx.cs" Inherits="child_a_c.Crud.AdopterCrud" %>
 
 <!DOCTYPE html>
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Manage Adopters</title>
@@ -9,60 +10,54 @@
     <form id="form1" runat="server">
         <div>
             <h2>Manage Adopters</h2>
-
-            <asp:Label ID="lblMessage" runat="server" ForeColor="Red"></asp:Label>
-
-            <asp:Label ID="lblAdopterId" runat="server" Text="Adopter ID:"></asp:Label>
-            <asp:TextBox ID="txtAdopterId" runat="server"></asp:TextBox><br />
-
-            <asp:Label ID="lblFirstName" runat="server" Text="First Name:"></asp:Label>
-            <asp:TextBox ID="txtFirstName" runat="server"></asp:TextBox><br />
-
-            <asp:Label ID="lblLastName" runat="server" Text="Last Name:"></asp:Label>
-            <asp:TextBox ID="txtLastName" runat="server"></asp:TextBox><br />
-
-            <asp:Label ID="lblDateOfBirth" runat="server" Text="Date of Birth:"></asp:Label>
-            <asp:TextBox ID="txtDateOfBirth" runat="server" TextMode="Date"></asp:TextBox><br />
-
-            <asp:Label ID="lblAddress" runat="server" Text="Address:"></asp:Label>
-            <asp:TextBox ID="txtAddress" runat="server"></asp:TextBox><br />
-
-            <asp:Label ID="lblPhoneNumber" runat="server" Text="Phone Number:"></asp:Label>
-            <asp:TextBox ID="txtPhoneNumber" runat="server"></asp:TextBox><br />
-
-            <asp:Label ID="lblEmail" runat="server" Text="Email:"></asp:Label>
-            <asp:TextBox ID="txtEmail" runat="server"></asp:TextBox><br />
-
-            <asp:Label ID="lblMaritalStatus" runat="server" Text="Marital Status:"></asp:Label>
-            <asp:TextBox ID="txtMaritalStatus" runat="server"></asp:TextBox><br />
-
-            <asp:Label ID="lblOccupation" runat="server" Text="Occupation:"></asp:Label>
-            <asp:TextBox ID="txtOccupation" runat="server"></asp:TextBox><br />
-
-            <asp:Label ID="lblEducationLevel" runat="server" Text="Education Level:"></asp:Label>
-            <asp:TextBox ID="txtEducationLevel" runat="server"></asp:TextBox><br />
-            <asp:Label ID="lblError" runat="server" ForeColor="Red"></asp:Label>
-
-            <asp:Button ID="btnAdd" runat="server" Text="Add" OnClick="btnSave_Click" />
-            <asp:Button ID="btnUpdate" runat="server" Text="Update" OnClick="btnUpdate_Click" />
-            <asp:Button ID="btnDelete" runat="server" Text="Delete" OnClick="btnDelete_Click" />
-            <asp:Button ID="btnClear" runat="server" Text="Clear" OnClick="btnClear_Click" />
-
-            <asp:GridView ID="gvChildren" runat="server" AutoGenerateColumns="False" DataKeyNames="adopter_id" OnSelectedIndexChanged="gvAdopters_SelectedIndexChanged">
+            <asp:GridView ID="gvAdopters" runat="server" AutoGenerateColumns="False" OnSelectedIndexChanged="gvAdopters_SelectedIndexChanged">
                 <Columns>
                     <asp:BoundField DataField="adopter_id" HeaderText="Adopter ID" />
                     <asp:BoundField DataField="first_name" HeaderText="First Name" />
                     <asp:BoundField DataField="last_name" HeaderText="Last Name" />
-                    <asp:BoundField DataField="date_of_birth" HeaderText="Date of Birth" />
+                    <asp:BoundField DataField="date_of_birth" HeaderText="Date of Birth" DataFormatString="{0:yyyy-MM-dd}" />
                     <asp:BoundField DataField="address" HeaderText="Address" />
                     <asp:BoundField DataField="phone_number" HeaderText="Phone Number" />
                     <asp:BoundField DataField="email" HeaderText="Email" />
                     <asp:BoundField DataField="marital_status" HeaderText="Marital Status" />
                     <asp:BoundField DataField="occupation" HeaderText="Occupation" />
                     <asp:BoundField DataField="education_level" HeaderText="Education Level" />
+                    <asp:CommandField ShowSelectButton="True" />
                 </Columns>
             </asp:GridView>
 
+            <h3>Adopter Details</h3>
+            <asp:Label Text="Adopter ID:" runat="server" />
+            <asp:TextBox ID="txtAdopterID" runat="server" ReadOnly="true" /><br />
+
+            <asp:Label Text="First Name:" runat="server" />
+            <asp:TextBox ID="txtFirstName" runat="server" /><br />
+
+            <asp:Label Text="Last Name:" runat="server" />
+            <asp:TextBox ID="txtLastName" runat="server" /><br />
+
+            <asp:Label Text="Date of Birth:" runat="server" />
+            <asp:TextBox ID="txtDateOfBirth" runat="server" TextMode="Date" /><br />
+
+            <asp:Label Text="Address:" runat="server" />
+            <asp:TextBox ID="txtAddress" runat="server" /><br />
+
+            <asp:Label Text="Phone Number:" runat="server" />
+            <asp:TextBox ID="txtPhoneNumber" runat="server" /><br />
+
+            <asp:Label Text="Email:" runat="server" />
+            <asp:TextBox ID="txtEmail" runat="server" /><br />
+
+            <asp:Label Text="Marital Status:" runat="server" />
+            <asp:TextBox ID="txtMaritalStatus" runat="server" /><br />
+
+            <asp:Label Text="Occupation:" runat="server" />
+            <asp:TextBox ID="txtOccupation" runat="server" /><br />
+
+            <asp:Label Text="Education Level:" runat="server" />
+            <asp:TextBox ID="txtEducationLevel" runat="server" /><br />
+
+            <asp:Button ID="btnSave" runat="server" Text="Save" OnClick="btnSave_Click" />
         </div>
     </form>
 </body>
