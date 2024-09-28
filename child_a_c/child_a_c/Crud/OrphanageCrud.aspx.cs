@@ -2,6 +2,7 @@
 using System.Data.SqlClient;
 using System.Configuration;
 using System.Web.UI.WebControls;
+using System.Web.Security;
 
 namespace child_a_c.Crud
 {
@@ -11,6 +12,11 @@ namespace child_a_c.Crud
         {
             if (!IsPostBack)
             {
+                if (!User.Identity.IsAuthenticated)
+                {
+                    Response.Redirect("~/Crud/Login.aspx");
+                }
+
                 LoadOrphanages();
             }
         }
@@ -69,6 +75,26 @@ namespace child_a_c.Crud
                 conn.Open();
                 cmd.ExecuteNonQuery();
                 LoadOrphanages();
+            }
+        }
+
+        protected void handleLogout(object sender, EventArgs e)
+        {
+            FormsAuthentication.SignOut();
+            Response.Redirect("~/Crud/Login.aspx");
+        }
+        public void CreateOrphanage(string email, string username, string password)
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["Database1"].ConnectionString;
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("INSERT INTO Orphanages (email, name, password) VALUES (@Email, @Name, @Password)", conn);
+                cmd.Parameters.AddWithValue("@Email", email);
+                cmd.Parameters.AddWithValue("@Name", username);
+                cmd.Parameters.AddWithValue("@Password", password);
+
+                conn.Open();
+                cmd.ExecuteNonQuery();
             }
         }
     }

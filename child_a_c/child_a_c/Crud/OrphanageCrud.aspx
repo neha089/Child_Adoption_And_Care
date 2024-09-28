@@ -55,6 +55,8 @@
             <asp:TextBox ID="txtLicenseNumber" runat="server" /><br />
 
             <asp:Button ID="btnSave" runat="server" Text="Save" OnClick="btnSave_Click" />
+
+            <asp:Button ID ="btnlogout" runat ="server" Text="Logout" OnClick="handleLogout" />
         </div>
     </form>
 </body>
