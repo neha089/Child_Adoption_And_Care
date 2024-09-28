@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="OrphanageDocument.aspx.cs" Inherits="child_a_c.Crud.OrphanageDocument" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="OrphanageDocument.aspx.cs" Inherits="Crud.OrphanageDocument" %>
 
 <!DOCTYPE html>
 
@@ -39,7 +39,7 @@
         <asp:TextBox ID="txtDocumentURL" runat="server" /><br />
 
         <asp:Label Text="Upload Date:" runat="server" />
-        <asp:TextBox ID="txtUploadDate" runat="server" /><br />
+        <asp:TextBox ID="txtUploadDate" runat="server" TextMode="Date" /><br />
 
         <asp:Button ID="btnSave" runat="server" Text="Save" OnClick="btnSave_Click" />
     </form>

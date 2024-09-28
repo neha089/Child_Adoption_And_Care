@@ -17,7 +17,7 @@ namespace Crud
 
         private void LoadChildren()
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["Con1"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["Database1"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 SqlCommand cmd = new SqlCommand("SELECT * FROM Children", conn);
@@ -41,7 +41,7 @@ namespace Crud
 
         protected void btnSave_Click(object sender, EventArgs e)
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["Con1"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["Database1"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 SqlCommand cmd;
