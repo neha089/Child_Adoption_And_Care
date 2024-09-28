@@ -61,3 +61,5 @@ D:\APEXA\D\Code\child_adoption\Child_Adoption_And_Care\child_a_c\child_a_c\obj\D
 D:\APEXA\D\Code\child_adoption\Child_Adoption_And_Care\child_a_c\child_a_c\obj\Debug\child_a_c.csproj.Up2Date
 D:\APEXA\D\Code\child_adoption\Child_Adoption_And_Care\child_a_c\child_a_c\obj\Debug\child_a_c.dll
 D:\APEXA\D\Code\child_adoption\Child_Adoption_And_Care\child_a_c\child_a_c\obj\Debug\child_a_c.pdb
+C:\Users\Yogesh Patel\source\repos\child_a_c\child_a_c\obj\Debug\child_a_c.dll
+C:\Users\Yogesh Patel\source\repos\child_a_c\child_a_c\obj\Debug\child_a_c.pdb

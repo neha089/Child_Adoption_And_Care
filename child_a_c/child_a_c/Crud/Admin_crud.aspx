@@ -1,121 +1,55 @@
-﻿using System;
-using System.Data;
-using System.Data.SqlClient;
-using System.Configuration;
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="admin_crud.aspx.cs" Inherits="child_a_c.Crud.admin_crud" %>
 
-namespace YourNamespace
-{
-    public partial class Adopters : System.Web.UI.Page
-    {
-        string connectionString = ConfigurationManager.ConnectionStrings["YourConnectionString"].ConnectionString;
+<!DOCTYPE html>
 
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            if (!IsPostBack)
-            {
-                BindGridView();
-            }
-        }
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Admin Management</title>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div>
+            <h2>Manage Admins</h2>
+            <asp:GridView ID="gvAdmins" runat="server" AutoGenerateColumns="False" OnSelectedIndexChanged="gvAdmins_SelectedIndexChanged">
+                <Columns>
+                    <asp:BoundField DataField="admin_id" HeaderText="Admin ID" />
+                    <asp:BoundField DataField="username" HeaderText="Username" />
+                    <asp:BoundField DataField="email" HeaderText="Email" />
+                    <asp:BoundField DataField="role" HeaderText="Role" />
+                    <asp:CommandField ShowSelectButton="True" />
+                </Columns>
+            </asp:GridView>
 
-        protected void btnAdd_Click(object sender, EventArgs e)
-        {
-            using (SqlConnection con = new SqlConnection(connectionString))
-            {
-                con.Open();
-                SqlCommand cmd = new SqlCommand("INSERT INTO Adopters (first_name, last_name, date_of_birth, address, phone_number, email, marital_status, occupation, education_level) VALUES (@FirstName, @LastName, @DOB, @Address, @Phone, @Email, @MaritalStatus, @Occupation, @Education)", con);
-                cmd.Parameters.AddWithValue("@FirstName", txtFirstName.Text);
-                cmd.Parameters.AddWithValue("@LastName", txtLastName.Text);
-                cmd.Parameters.AddWithValue("@DOB", Convert.ToDateTime(txtDateOfBirth.Text));
-                cmd.Parameters.AddWithValue("@Address", txtAddress.Text);
-                cmd.Parameters.AddWithValue("@Phone", txtPhoneNumber.Text);
-                cmd.Parameters.AddWithValue("@Email", txtEmail.Text);
-                cmd.Parameters.AddWithValue("@MaritalStatus", txtMaritalStatus.Text);
-                cmd.Parameters.AddWithValue("@Occupation", txtOccupation.Text);
-                cmd.Parameters.AddWithValue("@Education", txtEducationLevel.Text);
+            <h3>Admin Details</h3>
+            <asp:Label Text="Admin ID:" runat="server" />
+            <asp:TextBox ID="txtAdminID" runat="server" ReadOnly="true" /><br />
 
-                cmd.ExecuteNonQuery();
-                BindGridView();
-            }
-        }
+            <asp:Label Text="Username:" runat="server" />
+            <asp:TextBox ID="txtUsername" runat="server" /><br />
 
-        protected void btnUpdate_Click(object sender, EventArgs e)
-        {
-            using (SqlConnection con = new SqlConnection(connectionString))
-            {
-                con.Open();
-                SqlCommand cmd = new SqlCommand("UPDATE Adopters SET first_name=@FirstName, last_name=@LastName, date_of_birth=@DOB, address=@Address, phone_number=@Phone, email=@Email, marital_status=@MaritalStatus, occupation=@Occupation, education_level=@Education WHERE adopter_id=@AdopterID", con);
-                cmd.Parameters.AddWithValue("@AdopterID", Convert.ToInt32(txtAdopterId.Text));
-                cmd.Parameters.AddWithValue("@FirstName", txtFirstName.Text);
-                cmd.Parameters.AddWithValue("@LastName", txtLastName.Text);
-                cmd.Parameters.AddWithValue("@DOB", Convert.ToDateTime(txtDateOfBirth.Text));
-                cmd.Parameters.AddWithValue("@Address", txtAddress.Text);
-                cmd.Parameters.AddWithValue("@Phone", txtPhoneNumber.Text);
-                cmd.Parameters.AddWithValue("@Email", txtEmail.Text);
-                cmd.Parameters.AddWithValue("@MaritalStatus", txtMaritalStatus.Text);
-                cmd.Parameters.AddWithValue("@Occupation", txtOccupation.Text);
-                cmd.Parameters.AddWithValue("@Education", txtEducationLevel.Text);
+            <asp:Label Text="Password:" runat="server" />
+            <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" /><br />
 
-                cmd.ExecuteNonQuery();
-                BindGridView();
-            }
-        }
+            <asp:Label Text="First Name:" runat="server" />
+            <asp:TextBox ID="txtFirstName" runat="server" /><br />
 
-        protected void btnDelete_Click(object sender, EventArgs e)
-        {
-            using (SqlConnection con = new SqlConnection(connectionString))
-            {
-                con.Open();
-                SqlCommand cmd = new SqlCommand("DELETE FROM Adopters WHERE adopter_id=@AdopterID", con);
-                cmd.Parameters.AddWithValue("@AdopterID", Convert.ToInt32(txtAdopterId.Text));
-                cmd.ExecuteNonQuery();
-                BindGridView();
-            }
-        }
+            <asp:Label Text="Last Name:" runat="server" />
+            <asp:TextBox ID="txtLastName" runat="server" /><br />
 
-        protected void btnClear_Click(object sender, EventArgs e)
-        {
-            ClearFields();
-        }
+            <asp:Label Text="Email:" runat="server" />
+            <asp:TextBox ID="txtEmail" runat="server" /><br />
 
-        private void ClearFields()
-        {
-            txtAdopterId.Text = "";
-            txtFirstName.Text = "";
-            txtLastName.Text = "";
-            txtDateOfBirth.Text = "";
-            txtAddress.Text = "";
-            txtPhoneNumber.Text = "";
-            txtEmail.Text = "";
-            txtMaritalStatus.Text = "";
-            txtOccupation.Text = "";
-            txtEducationLevel.Text = "";
-        }
+            <asp:Label Text="Phone Number:" runat="server" />
+            <asp:TextBox ID="txtPhoneNumber" runat="server" /><br />
 
-        private void BindGridView()
-        {
-            using (SqlConnection con = new SqlConnection(connectionString))
-            {
-                SqlDataAdapter sda = new SqlDataAdapter("SELECT * FROM Adopters", con);
-                DataTable dt = new DataTable();
-                sda.Fill(dt);
-                gvAdopters.DataSource = dt;
-                gvAdopters.DataBind();
-            }
-        }
+            <asp:Label Text="Role:" runat="server" />
+            <asp:TextBox ID="txtRole" runat="server" /><br />
 
-        protected void gvAdopters_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            GridViewRow row = gvAdopters.SelectedRow;
-            txtAdopterId.Text = row.Cells[1].Text;
-            txtFirstName.Text = row.Cells[2].Text;
-            txtLastName.Text = row.Cells[3].Text;
-            txtDateOfBirth.Text = row.Cells[4].Text;
-            txtAddress.Text = row.Cells[5].Text;
-            txtPhoneNumber.Text = row.Cells[6].Text;
-            txtEmail.Text = row.Cells[7].Text;
-            txtMaritalStatus.Text = row.Cells[8].Text;
-            txtOccupation.Text = row.Cells[9].Text;
-            txtEducationLevel.Text = row.Cells[10].Text;
-        }
-    }
-}
+            <asp:Label Text="Status:" runat="server" />
+            <asp:TextBox ID="txtStatus" runat="server" /><br />
+
+            <asp:Button ID="btnSave" runat="server" Text="Save" OnClick="btnSave_Click" />
+        </div>
+    </form>
+</body>
+</html>

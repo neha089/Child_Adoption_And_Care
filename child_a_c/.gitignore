@@ -1,9 +1,23 @@
-# Ignore debug and project-specific cache files
-child_a_c/obj/Debug/
-../.vs/
-../.vs/Child_Adoption_And_Care/
-../.vs/ProjectSettings.json
+# Ignore Visual Studio related directories
+.vs/
+.vscode/
 
-# Ignore MDF files
+# Ignore build output directories
+child_a_c/obj/Debug/
+child_a_c/obj/Release/
+child_a_c/bin/
+
+# Ignore project-specific settings or cache files
+*.user
+*.suo
+*.sln.docstates
+*.log
+*.tlog
+
+# Ignore database files
 *.mdf
 *.ldf
+
+# Ignore any generated packages or dependencies
+*.nupkg
+*.lock.json

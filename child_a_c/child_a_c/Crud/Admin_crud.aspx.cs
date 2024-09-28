@@ -1,201 +1,71 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Data;
-using System.Configuration;
 using System.Data.SqlClient;
-using System.Web.Configuration;
+using System.Configuration;
+using System.Web.UI.WebControls;
 
-namespace CAC.Crud
+namespace child_a_c.Crud
 {
     public partial class admin_crud : System.Web.UI.Page
     {
-        SqlConnection con;
-        DataSet ds;
-        DataTable dt;
-        SqlDataAdapter da;
-        SqlCommandBuilder builder;
-
-        void init()
-        {
-            con = new SqlConnection();
-            con.ConnectionString = WebConfigurationManager.ConnectionStrings["Con_Db1"].ConnectionString;
-        }
+        private string connectionString = ConfigurationManager.ConnectionStrings["Database1"].ConnectionString;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                Label1.Text = "Enter id";
-                retrieve();
+                LoadAdmins();
             }
         }
 
-        void retrieve()
+        private void LoadAdmins()
         {
-            try
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                init();
-                using (con)
+                SqlCommand cmd = new SqlCommand("SELECT * FROM Admins", conn);
+                conn.Open();
+                gvAdmins.DataSource = cmd.ExecuteReader();
+                gvAdmins.DataBind();
+            }
+        }
+
+        protected void gvAdmins_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            GridViewRow row = gvAdmins.SelectedRow;
+            txtAdminID.Text = row.Cells[0].Text;
+            txtUsername.Text = row.Cells[1].Text;
+            txtEmail.Text = row.Cells[2].Text;
+            txtRole.Text = row.Cells[3].Text;
+        }
+
+        protected void btnSave_Click(object sender, EventArgs e)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd;
+                if (string.IsNullOrEmpty(txtAdminID.Text))
                 {
-                    string command = "Select * from Admins";
-                    SqlCommand cmd = new SqlCommand(command, con);
-                    con.Open();
-                    SqlDataReader rdr = cmd.ExecuteReader();
-                    GridView1.DataSource = rdr;
-                    GridView1.DataBind();
-                    rdr.Close();
+                    cmd = new SqlCommand("INSERT INTO Admins (username, password, first_name, last_name, email, phone_number, role, status) VALUES (@Username, @Password, @FirstName, @LastName, @Email, @PhoneNumber, @Role, @Status)", conn);
                 }
-            }
-            catch (Exception ex)
-            {
-                Response.Write("Error in fetching: " + ex.Message);
-            }
-        }
-
-        void retrieveById()
-        {
-            try
-            {
-                init();
-                using (con)
+                else
                 {
-                    string command = "Select * from Admins where admin_id = ISNULL(@Id,1)";
-                    SqlCommand cmd = new SqlCommand(command, con);
-                    if (string.IsNullOrEmpty(TextBox1.Text))
-                    {
-                        cmd.Parameters.AddWithValue("@Id", DBNull.Value);
-                    }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue("@Id", TextBox1.Text);
-                    }
-                    con.Open();
-                    ds = new DataSet();
-                    da = new SqlDataAdapter(cmd);
-                    builder = new SqlCommandBuilder(da);
-                    da.Fill(ds, "Admins");
-                    dt = ds.Tables["Admins"];
+                    cmd = new SqlCommand("UPDATE Admins SET username = @Username, password = @Password, first_name = @FirstName, last_name = @LastName, email = @Email, phone_number = @PhoneNumber, role = @Role, status = @Status WHERE admin_id = @AdminID", conn);
+                    cmd.Parameters.AddWithValue("@AdminID", txtAdminID.Text);
                 }
+
+                // Add common parameters
+                cmd.Parameters.AddWithValue("@Username", txtUsername.Text);
+                cmd.Parameters.AddWithValue("@Password", txtPassword.Text);
+                cmd.Parameters.AddWithValue("@FirstName", txtFirstName.Text);
+                cmd.Parameters.AddWithValue("@LastName", txtLastName.Text);
+                cmd.Parameters.AddWithValue("@Email", txtEmail.Text);
+                cmd.Parameters.AddWithValue("@PhoneNumber", txtPhoneNumber.Text);
+                cmd.Parameters.AddWithValue("@Role", txtRole.Text);
+                cmd.Parameters.AddWithValue("@Status", txtStatus.Text);
+
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                LoadAdmins();
             }
-            catch (Exception ex)
-            {
-                Response.Write("Error in fetching by id: " + ex.Message);
-            }
-        }
-
-        void getById()
-        {
-            retrieveById();
-            if (dt != null && dt.Rows.Count > 0)
-            {
-                GridView2.DataSource = dt;
-                GridView2.DataBind();
-            }
-            else
-            {
-                Response.Write("No data found for the given id.");
-            }
-        }
-
-        void UpdateById(object sender, EventArgs e)
-        {
-            try
-            {
-                init();
-                using (con)
-                {
-                    retrieveById();
-
-                    if (dt != null && dt.Rows.Count > 0)
-                    {
-                        DataRow row = dt.Rows[0];
-                        row["username"] = TextBox2.Text;
-
-
-                        if (da != null && ds != null)
-                        {
-                            da.Update(ds, "Admins");
-                        }
-
-                        GridView3.DataSource = dt;
-                        GridView3.DataBind();
-                    }
-                    else
-                    {
-                        Response.Write("Row not found for updation");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Response.Write("Error in updation: " + ex.Message);
-            }
-        }
-
-        void DeleteById(object sender, EventArgs e)
-        {
-            try
-            {
-                init();
-                using (con)
-                {
-                    retrieveById();
-                    int id = 0;
-                    if (string.IsNullOrEmpty(TextBox1.Text))
-                    {
-                        Response.Write("Please enter id which you want to delete");
-                    }
-                    else
-                    {
-                        id = int.Parse(TextBox1.Text);
-                    }
-
-                    if (dt != null)
-                    {
-                        DataRow row = dt.AsEnumerable().FirstOrDefault(r => r.Field<int>("admin_id") == id);
-                        if (row != null)
-                        {
-                            row.Delete();
-                            Label2.Text = "Deleted successfully";
-                            if (da != null && ds != null)
-                            {
-                                da.Update(ds, "Admins");
-                            }
-                        }
-                        else
-                        {
-                            Label2.Text = "Row not found";
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Response.Write("Error in deletion: " + ex.Message);
-            }
-        }
-
-        protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-        }
-
-        protected void Button1_Click(object sender, EventArgs e)
-        {
-            DeleteById(sender, e);
-        }
-
-        protected void Button2_Click(object sender, EventArgs e)
-        {
-            UpdateById(sender, e);
-        }
-
-        protected void Button3_Click(object sender, EventArgs e)
-        {
-            getById();
         }
     }
 }

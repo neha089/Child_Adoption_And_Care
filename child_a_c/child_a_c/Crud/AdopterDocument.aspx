@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AdopterDocument.aspx.cs" Inherits="child_a_c.Crud.AdopterDocument" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="AdopterDocument.aspx.cs" Inherits="child_a_c.Crud.AdopterDocument" %>
 
 <!DOCTYPE html>
 

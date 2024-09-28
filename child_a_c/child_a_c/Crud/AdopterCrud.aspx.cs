@@ -1,115 +1,77 @@
 ﻿using System;
-using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
 using System.Web.UI.WebControls;
 
-namespace CAC.Crud
+namespace child_a_c.Crud
 {
-    public partial class adopters_crud : System.Web.UI.Page
+    public partial class AdopterCrud : System.Web.UI.Page
     {
-        string connectionString = ConfigurationManager.ConnectionStrings["CACCon"].ConnectionString;
-
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                BindGrid();
+                LoadAdopters();
             }
         }
 
-        private void BindGrid()
+        private void LoadAdopters()
         {
-            using (SqlConnection con = new SqlConnection(connectionString))
+            string connectionString = ConfigurationManager.ConnectionStrings["Database1"].ConnectionString;
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                SqlCommand cmd = new SqlCommand("SELECT * FROM Adopters", con);
-                SqlDataAdapter sda = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable();
-                sda.Fill(dt);
-                GridViewAdopters.DataSource = dt;
-                GridViewAdopters.DataBind();
+                SqlCommand cmd = new SqlCommand("SELECT * FROM Adopters", conn);
+                conn.Open();
+                gvAdopters.DataSource = cmd.ExecuteReader();
+                gvAdopters.DataBind();
             }
+        }
+
+        protected void gvAdopters_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            GridViewRow row = gvAdopters.SelectedRow;
+            txtAdopterID.Text = row.Cells[0].Text;
+            txtFirstName.Text = row.Cells[1].Text;
+            txtLastName.Text = row.Cells[2].Text;
+            txtDateOfBirth.Text = Convert.ToDateTime(row.Cells[3].Text).ToString("yyyy-MM-dd");
+            txtAddress.Text = row.Cells[4].Text;
+            txtPhoneNumber.Text = row.Cells[5].Text;
+            txtEmail.Text = row.Cells[6].Text;
+            txtMaritalStatus.Text = row.Cells[7].Text;
+            txtOccupation.Text = row.Cells[8].Text;
+            txtEducationLevel.Text = row.Cells[9].Text;
         }
 
         protected void btnSave_Click(object sender, EventArgs e)
         {
-            using (SqlConnection con = new SqlConnection(connectionString))
+            string connectionString = ConfigurationManager.ConnectionStrings["Database1"].ConnectionString;
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                SqlCommand cmd = new SqlCommand("INSERT INTO Adopters (first_name, last_name, date_of_birth, address, phone_number, email, marital_status, occupation, education_level) VALUES (@FirstName, @LastName, @DOB, @Address, @PhoneNumber, @Email, @MaritalStatus, @Occupation, @EducationLevel)", con);
+                SqlCommand cmd;
+                if (string.IsNullOrEmpty(txtAdopterID.Text))
+                {
+                    cmd = new SqlCommand("INSERT INTO Adopters (first_name, last_name, date_of_birth, address, phone_number, email, marital_status, occupation, education_level) VALUES (@FirstName, @LastName, @DateOfBirth, @Address, @PhoneNumber, @Email, @MaritalStatus, @Occupation, @EducationLevel)", conn);
+                }
+                else
+                {
+                    cmd = new SqlCommand("UPDATE Adopters SET first_name = @FirstName, last_name = @LastName, date_of_birth = @DateOfBirth, address = @Address, phone_number = @PhoneNumber, email = @Email, marital_status = @MaritalStatus, occupation = @Occupation, education_level = @EducationLevel WHERE adopter_id = @AdopterID", conn);
+                    cmd.Parameters.AddWithValue("@AdopterID", txtAdopterID.Text);
+                }
+
                 cmd.Parameters.AddWithValue("@FirstName", txtFirstName.Text);
                 cmd.Parameters.AddWithValue("@LastName", txtLastName.Text);
-                cmd.Parameters.AddWithValue("@DOB", txtDOB.Text);
-                cmd.Parameters.AddWithValue("@Address", txtAddress.Text); https://localhost:44351/Crud/AdopterCrud.aspx.cs
+                cmd.Parameters.AddWithValue("@DateOfBirth", txtDateOfBirth.Text);
+                cmd.Parameters.AddWithValue("@Address", txtAddress.Text);
                 cmd.Parameters.AddWithValue("@PhoneNumber", txtPhoneNumber.Text);
                 cmd.Parameters.AddWithValue("@Email", txtEmail.Text);
                 cmd.Parameters.AddWithValue("@MaritalStatus", txtMaritalStatus.Text);
                 cmd.Parameters.AddWithValue("@Occupation", txtOccupation.Text);
                 cmd.Parameters.AddWithValue("@EducationLevel", txtEducationLevel.Text);
 
-                con.Open();
+                conn.Open();
                 cmd.ExecuteNonQuery();
-                con.Close();
-
-                BindGrid();
+                LoadAdopters();
             }
-        }
-
-        protected void GridViewAdopters_RowEditing(object sender, System.Web.UI.WebControls.GridViewEditEventArgs e)
-        {
-            GridViewAdopters.EditIndex = e.NewEditIndex;
-            BindGrid();
-        }
-
-        protected void GridViewAdopters_RowUpdating(object sender, System.Web.UI.WebControls.GridViewUpdateEventArgs e)
-        {
-            int id = Convert.ToInt32(GridViewAdopters.DataKeys[e.RowIndex].Value.ToString());
-            GridViewRow row = GridViewAdopters.Rows[e.RowIndex];
-
-            // Use FindControl to get the TextBox from the TemplateField
-            TextBox txtFirstName = (TextBox)row.FindControl("txtFirstName");
-            TextBox txtLastName = (TextBox)row.FindControl("txtLastName");
-
-            if (txtFirstName != null && txtLastName != null)
-            {
-                string firstName = txtFirstName.Text;
-                string lastName = txtLastName.Text;
-
-                using (SqlConnection con = new SqlConnection(connectionString))
-                {
-                    SqlCommand cmd = new SqlCommand("UPDATE Adopters SET first_name=@FirstName, last_name=@LastName WHERE adopter_id=@Id", con);
-                    cmd.Parameters.AddWithValue("@FirstName", firstName);
-                    cmd.Parameters.AddWithValue("@LastName", lastName);
-                    cmd.Parameters.AddWithValue("@Id", id);
-
-                    con.Open();
-                    cmd.ExecuteNonQuery();
-                    con.Close();
-
-                    GridViewAdopters.EditIndex = -1;
-                    BindGrid();
-                }
-            }
-        }
-
-
-        protected void GridViewAdopters_RowDeleting(object sender, System.Web.UI.WebControls.GridViewDeleteEventArgs e)
-        {
-            int id = Convert.ToInt32(GridViewAdopters.DataKeys[e.RowIndex].Value.ToString());
-            using (SqlConnection con = new SqlConnection(connectionString))
-            {
-                SqlCommand cmd = new SqlCommand("DELETE FROM Adopters WHERE adopter_id=@Id", con);
-                cmd.Parameters.AddWithValue("@Id", id);
-                con.Open();
-                cmd.ExecuteNonQuery();
-                con.Close();
-                BindGrid();
-            }
-        }
-
-        protected void GridViewAdopters_RowCancelingEdit(object sender, System.Web.UI.WebControls.GridViewCancelEditEventArgs e)
-        {
-            GridViewAdopters.EditIndex = -1;
-            BindGrid();
         }
     }
 }
