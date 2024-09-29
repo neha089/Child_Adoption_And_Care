@@ -10,21 +10,6 @@
     <form id="form1" runat="server">
         <div>
             <h2>Manage Adopters</h2>
-            <asp:GridView ID="gvAdopters" runat="server" AutoGenerateColumns="False" OnSelectedIndexChanged="gvAdopters_SelectedIndexChanged">
-                <Columns>
-                    <asp:BoundField DataField="adopter_id" HeaderText="Adopter ID" />
-                    <asp:BoundField DataField="first_name" HeaderText="First Name" />
-                    <asp:BoundField DataField="last_name" HeaderText="Last Name" />
-                    <asp:BoundField DataField="date_of_birth" HeaderText="Date of Birth" DataFormatString="{0:yyyy-MM-dd}" />
-                    <asp:BoundField DataField="address" HeaderText="Address" />
-                    <asp:BoundField DataField="phone_number" HeaderText="Phone Number" />
-                    <asp:BoundField DataField="email" HeaderText="Email" />
-                    <asp:BoundField DataField="marital_status" HeaderText="Marital Status" />
-                    <asp:BoundField DataField="occupation" HeaderText="Occupation" />
-                    <asp:BoundField DataField="education_level" HeaderText="Education Level" />
-                    <asp:CommandField ShowSelectButton="True" />
-                </Columns>
-            </asp:GridView>
 
             <h3>Adopter Details</h3>
             <asp:Label Text="Adopter ID:" runat="server" />

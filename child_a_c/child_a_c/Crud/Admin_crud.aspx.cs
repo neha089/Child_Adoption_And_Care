@@ -39,20 +39,11 @@ namespace child_a_c.Crud
 
         protected void btnSave_Click(object sender, EventArgs e)
         {
+            string connectionString = ConfigurationManager.ConnectionStrings["Database1"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                SqlCommand cmd;
-                if (string.IsNullOrEmpty(txtAdminID.Text))
-                {
-                    cmd = new SqlCommand("INSERT INTO Admins (username, password, first_name, last_name, email, phone_number, role, status) VALUES (@Username, @Password, @FirstName, @LastName, @Email, @PhoneNumber, @Role, @Status)", conn);
-                }
-                else
-                {
-                    cmd = new SqlCommand("UPDATE Admins SET username = @Username, password = @Password, first_name = @FirstName, last_name = @LastName, email = @Email, phone_number = @PhoneNumber, role = @Role, status = @Status WHERE admin_id = @AdminID", conn);
-                    cmd.Parameters.AddWithValue("@AdminID", txtAdminID.Text);
-                }
+                SqlCommand cmd = new SqlCommand("INSERT INTO Admins (username, password, first_name, last_name, email, phone_number, role, status) VALUES (@Username, @Password, @FirstName, @LastName, @Email, @PhoneNumber, @Role, @Status)", conn);
 
-                // Add common parameters
                 cmd.Parameters.AddWithValue("@Username", txtUsername.Text);
                 cmd.Parameters.AddWithValue("@Password", txtPassword.Text);
                 cmd.Parameters.AddWithValue("@FirstName", txtFirstName.Text);
@@ -63,9 +54,11 @@ namespace child_a_c.Crud
                 cmd.Parameters.AddWithValue("@Status", txtStatus.Text);
 
                 conn.Open();
-                cmd.ExecuteNonQuery();
-                LoadAdmins();
+                cmd.ExecuteNonQuery(); // Save data
+                LoadAdmins(); // Reload admin list
             }
         }
+
+
     }
 }

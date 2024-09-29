@@ -8,17 +8,7 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <div>
-            <h2>Manage Admins</h2>
-            <asp:GridView ID="gvAdmins" runat="server" AutoGenerateColumns="False" OnSelectedIndexChanged="gvAdmins_SelectedIndexChanged">
-                <Columns>
-                    <asp:BoundField DataField="admin_id" HeaderText="Admin ID" />
-                    <asp:BoundField DataField="username" HeaderText="Username" />
-                    <asp:BoundField DataField="email" HeaderText="Email" />
-                    <asp:BoundField DataField="role" HeaderText="Role" />
-                    <asp:CommandField ShowSelectButton="True" />
-                </Columns>
-            </asp:GridView>
+        
 
             <h3>Admin Details</h3>
             <asp:Label Text="Admin ID:" runat="server" />

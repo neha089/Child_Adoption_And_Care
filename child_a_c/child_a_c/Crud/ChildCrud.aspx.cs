@@ -3,6 +3,7 @@ using System.Data.SqlClient;
 using System.Configuration;
 using System.Web.UI.WebControls; // Ensure this is included
 using child_a_c.Crud;
+using System.Web.Security;
 
 namespace child_a_c.Crud
 {
@@ -64,6 +65,25 @@ namespace child_a_c.Crud
                 conn.Open();
                 cmd.ExecuteNonQuery();
                 LoadChildrenRecords();
+            }
+        }
+        protected void handleLogout(object sender, EventArgs e)
+        {
+            FormsAuthentication.SignOut();
+            Response.Redirect("~/Crud/Login.aspx");
+        }
+        public void CreateChild(string email, string username, string password)
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["Database1"].ConnectionString;
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("INSERT INTO Children (email, name, password) VALUES (@Email, @Name, @Password)", conn);
+                cmd.Parameters.AddWithValue("@Email", email);
+                cmd.Parameters.AddWithValue("@Name", username);
+                cmd.Parameters.AddWithValue("@Password", password);
+
+                conn.Open();
+                cmd.ExecuteNonQuery();
             }
         }
     }

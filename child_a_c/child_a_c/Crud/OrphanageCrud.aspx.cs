@@ -2,6 +2,7 @@
 using System.Data.SqlClient;
 using System.Configuration;
 using System.Web.UI.WebControls;
+using System.Web.Security;
 
 namespace child_a_c.Crud
 {
@@ -11,6 +12,11 @@ namespace child_a_c.Crud
         {
             if (!IsPostBack)
             {
+                if (!User.Identity.IsAuthenticated)
+                {
+                    Response.Redirect("~/Crud/Login.aspx");
+                }
+
                 LoadOrphanages();
             }
         }
@@ -27,19 +33,19 @@ namespace child_a_c.Crud
             }
         }
 
-        protected void gvOrphanages_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            GridViewRow row = gvOrphanages.SelectedRow;
-            txtOrphanageID.Text = row.Cells[0].Text;
-            txtName.Text = row.Cells[1].Text;
-            txtAddress.Text = row.Cells[2].Text;
-            txtPhoneNumber.Text = row.Cells[3].Text;
-            txtEmail.Text = row.Cells[4].Text;
-            txtContactPerson.Text = row.Cells[5].Text;
-            txtCapacity.Text = row.Cells[6].Text;
-            txtNumberOfChildren.Text = row.Cells[7].Text;
-            txtLicenseNumber.Text = row.Cells[8].Text;
-        }
+        //protected void gvOrphanages_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    GridViewRow row = gvOrphanages.SelectedRow;
+        //    txtOrphanageID.Text = row.Cells[0].Text;
+        //    txtName.Text = row.Cells[1].Text;
+        //    txtAddress.Text = row.Cells[2].Text;
+        //    txtPhoneNumber.Text = row.Cells[3].Text;
+        //    txtEmail.Text = row.Cells[4].Text;
+        //    txtContactPerson.Text = row.Cells[5].Text;
+        //    txtCapacity.Text = row.Cells[6].Text;
+        //    txtNumberOfChildren.Text = row.Cells[7].Text;
+        //    txtLicenseNumber.Text = row.Cells[8].Text;
+        //}
 
         protected void btnSave_Click(object sender, EventArgs e)
         {
@@ -49,7 +55,7 @@ namespace child_a_c.Crud
                 SqlCommand cmd;
                 if (string.IsNullOrEmpty(txtOrphanageID.Text))
                 {
-                    cmd = new SqlCommand("INSERT INTO Orphanages (name, address, phone_number, email, contact_person, capacity, number_of_children, license_number) VALUES (@Name, @Address, @PhoneNumber, @Email, @ContactPerson, @Capacity, @NumberOfChildren, @LicenseNumber)", conn);
+                    cmd = new SqlCommand("INSERT INTO Orphanages (name, address, phone_number, email, contact_person, capacity, number_of_children, license_number, password) VALUES (@Name, @Address, @PhoneNumber, @Email, @ContactPerson, @Capacity, @NumberOfChildren, @LicenseNumber, @Password)", conn);
                 }
                 else
                 {
@@ -65,11 +71,15 @@ namespace child_a_c.Crud
                 cmd.Parameters.AddWithValue("@Capacity", txtCapacity.Text);
                 cmd.Parameters.AddWithValue("@NumberOfChildren", txtNumberOfChildren.Text);
                 cmd.Parameters.AddWithValue("@LicenseNumber", txtLicenseNumber.Text);
+                cmd.Parameters.AddWithValue("@Password", txtPassword.Text);
 
                 conn.Open();
-                cmd.ExecuteNonQuery();
-                LoadOrphanages();
+                cmd.ExecuteNonQuery(); // Save data
+                LoadOrphanages(); // Reload orphanage list
             }
         }
+
+
+
     }
 }

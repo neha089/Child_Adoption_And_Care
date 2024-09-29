@@ -2,6 +2,7 @@
 using System.Data.SqlClient;
 using System.Configuration;
 using System.Web.UI.WebControls;
+using System.Web.Security;
 
 namespace child_a_c.Crud
 {
@@ -69,9 +70,13 @@ namespace child_a_c.Crud
                 cmd.Parameters.AddWithValue("@EducationLevel", txtEducationLevel.Text);
 
                 conn.Open();
-                cmd.ExecuteNonQuery();
-                LoadAdopters();
+                cmd.ExecuteNonQuery(); // Save data
+                LoadAdopters(); // Reload adopter list
             }
         }
+
+
+
+
     }
 }

@@ -1,14 +1,16 @@
 ﻿-- Create Orphanages table first since it is referenced by other tables
-CREATE TABLE Orphanages (
-    orphanage_id INT PRIMARY KEY IDENTITY(1,1),
-    name NVARCHAR(100) NOT NULL,
-    address NVARCHAR(255) NOT NULL,
-    phone_number NVARCHAR(20) NOT NULL,
-    email NVARCHAR(100) NOT NULL,
-    contact_person NVARCHAR(100) NOT NULL,
-    capacity INT NOT NULL,
-    number_of_children INT NOT NULL,
-    license_number NVARCHAR(50) NOT NULL
+CREATE TABLE [dbo].[Orphanages] (
+    [orphanage_id]       INT            IDENTITY (1, 1) NOT NULL,
+    [name]               NVARCHAR (100) NOT NULL,
+    [address]            NVARCHAR (255) NULL,
+    [phone_number]       NVARCHAR (20)  NULL,
+    [email]              NVARCHAR (100) NOT NULL,
+    [contact_person]     NVARCHAR (100) NULL,
+    [capacity]           INT            NULL,
+    [number_of_children] INT            NULL,
+    [license_number]     NVARCHAR (50)  NULL,
+    [password]           NVARCHAR (255) NOT NULL,
+    PRIMARY KEY CLUSTERED ([orphanage_id] ASC)
 );
 
 -- Create Adopters table second
