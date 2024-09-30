@@ -17,7 +17,7 @@ public partial class Login : System.Web.UI.Page
             // Check if Admin
             if (email == "admin@example.com" && password == "admin123")
             {
-                Response.Redirect("AdminPage.aspx");
+                Response.Redirect("admin_crud.aspx");
                 return;
             }
 
@@ -30,24 +30,25 @@ public partial class Login : System.Web.UI.Page
                 object orphanageId = cmd.ExecuteScalar();
                 if (orphanageId != null)
                 {
-                    Response.Redirect("OrphanagePage.aspx");
+                    Response.Redirect("OrphanageCrud.aspx");
                     return;
                 }
             }
 
             // Check Adopter
-            string adopterQuery = "SELECT adopter_id FROM Adopters WHERE email=@Email AND password=@Password";
-            using (SqlCommand cmd = new SqlCommand(adopterQuery, conn))
-            {
-                cmd.Parameters.AddWithValue("@Email", email);
-                cmd.Parameters.AddWithValue("@Password", password);
-                object adopterId = cmd.ExecuteScalar();
-                if (adopterId != null)
-                {
-                    Response.Redirect("AdopterPage.aspx");
-                    return;
-                }
-            }
+            //    string adopterQuery = "SELECT adopter_id FROM Adopters WHERE email=@Email AND password=@Password";
+            //    using (SqlCommand cmd = new SqlCommand(adopterQuery, conn))
+            //    {
+            //        cmd.Parameters.AddWithValue("@Email", email);
+            //        cmd.Parameters.AddWithValue("@Password", password);
+            //        object adopterId = cmd.ExecuteScalar();
+            //        if (adopterId != null)
+            //        {
+            //            Response.Redirect("AdopterCrud.aspx");
+            //            return;
+            //        }
+            //    }
+            //}
         }
 
         // Invalid login
