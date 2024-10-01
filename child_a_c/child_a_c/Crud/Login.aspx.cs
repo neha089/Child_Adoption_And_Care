@@ -1,79 +1,57 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Web;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
-namespace child_a_c.Crud
+public partial class Login : System.Web.UI.Page
 {
-    public partial class Login : System.Web.UI.Page
+    protected void btnLogin_Click(object sender, EventArgs e)
     {
-        protected void Page_Load(object sender, EventArgs e)
+        string email = txtEmail.Text;
+        string password = txtPassword.Text;
+        string connectionString = ConfigurationManager.ConnectionStrings["Database1"].ConnectionString;
+
+        using (SqlConnection conn = new SqlConnection(connectionString))
         {
+            conn.Open();
 
-        }
-
-        protected void loginButton_Click(object sender, EventArgs e)
-        {
-            string UserType = userType.SelectedValue;  
-            string UserEmail = email.Text.Trim();
-            string UserPassword = password.Text.Trim();
-
-            if (ValidateLogin(UserType, UserEmail, UserPassword))
+            // Check if Admin
+            if (email == "admin@example.com" && password == "admin123")
             {
-                FormsAuthentication.SetAuthCookie(UserEmail, true);
-                switch (UserType)
-                {
-                    case "Orphanage":
-                        Response.Redirect("OrphanageCrud.aspx");
-                        break;
-                    case "Admin":
-                        Response.Redirect("AdminCrud.aspx");
-                        break;
-                    case "Adopter":
-                        Response.Redirect("AdopterCrud.aspx");
-                        break;
-                }
-            }
-            else
-            {
-                loginMessage.Text = "Invalid email or password.";
-            }
-        }
-
-        private bool ValidateLogin(string userType, string email, string password)
-        {
-            string connectionString = ConfigurationManager.ConnectionStrings["Database1"].ConnectionString;
-            string query = "";
-
-            switch (userType)
-            {
-                case "Orphanage":
-                    query = "SELECT COUNT(*) FROM Orphanages WHERE email = @Email AND password = @Password";
-                    break;
-                case "Admin":
-                    query = "SELECT COUNT(*) FROM Admins WHERE email = @Email AND password = @Password";
-                    break;
-                case "Adopter":
-                    query = "SELECT COUNT(*) FROM Adopters WHERE email = @Email AND password = @Password";
-                    break;
+                Response.Redirect("admin_crud.aspx");
+                return;
             }
 
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            // Check Orphanage
+            string orphanageQuery = "SELECT orphanage_id FROM Orphanages WHERE email=@Email AND password=@Password";
+            using (SqlCommand cmd = new SqlCommand(orphanageQuery, conn))
             {
-                SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@Email", email);
                 cmd.Parameters.AddWithValue("@Password", password);
-
-                conn.Open();
-                int result = (int)cmd.ExecuteScalar(); // Return the first column of the first row
-
-                return result > 0; 
+                object orphanageId = cmd.ExecuteScalar();
+                if (orphanageId != null)
+                {
+                    Response.Redirect("OrphanageCrud.aspx");
+                    return;
+                }
             }
+
+            // Check Adopter
+            //    string adopterQuery = "SELECT adopter_id FROM Adopters WHERE email=@Email AND password=@Password";
+            //    using (SqlCommand cmd = new SqlCommand(adopterQuery, conn))
+            //    {
+            //        cmd.Parameters.AddWithValue("@Email", email);
+            //        cmd.Parameters.AddWithValue("@Password", password);
+            //        object adopterId = cmd.ExecuteScalar();
+            //        if (adopterId != null)
+            //        {
+            //            Response.Redirect("AdopterCrud.aspx");
+            //            return;
+            //        }
+            //    }
+            //}
         }
+
+        // Invalid login
+        Response.Write("<script>alert('Invalid credentials');</script>");
     }
 }

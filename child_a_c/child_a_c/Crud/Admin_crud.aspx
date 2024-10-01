@@ -1,65 +1,65 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="admin_Crud.aspx.cs" Inherits="Crud.Adopters" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="admin_crud.aspx.cs" Inherits="admin_crud" %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>Adopter Management</title>
-    <link rel="stylesheet" type="text/css" href="Styles.css" /> <!-- Optional: Link to your CSS file -->
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
 </head>
 <body>
     <form id="form1" runat="server">
-        <div>
-            <h2>Adopter Management</h2>
-            <asp:Label ID="lblAdopterId" runat="server" Text="Adopter ID:" AssociatedControlID="txtAdopterId"></asp:Label>
-            <asp:TextBox ID="txtAdopterId" runat="server" ReadOnly="true"></asp:TextBox><br />
+        <div class="container">
+            <h1 class="my-4">Admin Dashboard</h1>
 
-            <asp:Label ID="lblFirstName" runat="server" Text="First Name:" AssociatedControlID="txtFirstName"></asp:Label>
-            <asp:TextBox ID="txtFirstName" runat="server"></asp:TextBox><br />
+            <h2>Orphanages</h2>
+            <div class="row">
+                <asp:Repeater ID="OrphanageRepeater" runat="server">
+                    <ItemTemplate>
+                        <div class="col-md-4">
+                            <div class="card mb-4 shadow-sm">
+                                <div class="card-body">
+                                    <h5 class="card-title"><%# Eval("name") %></h5>
+                                    <p class="card-text">
+                                        <strong>Address:</strong> <%# Eval("address") %><br />
+                                        <strong>Phone:</strong> <%# Eval("phone_number") %><br />
+                                        <strong>Email:</strong> <%# Eval("email") %><br />
+                                        <strong>Contact Person:</strong> <%# Eval("contact_person") %><br />
+                                        <strong>Capacity:</strong> <%# Eval("capacity") %><br />
+                                        <strong>Number of Children:</strong> <%# Eval("number_of_children") %><br />
+                                    </p>
 
-            <asp:Label ID="lblLastName" runat="server" Text="Last Name:" AssociatedControlID="txtLastName"></asp:Label>
-            <asp:TextBox ID="txtLastName" runat="server"></asp:TextBox><br />
+                                    <strong>Orphanage Documents:</strong>
+                                    <ul>
+                                        <%# Eval("OrphanageDocuments") != DBNull.Value ? Eval("OrphanageDocuments") : "No documents available." %>
+                                    </ul>
 
-            <asp:Label ID="lblDateOfBirth" runat="server" Text="Date of Birth:" AssociatedControlID="txtDateOfBirth"></asp:Label>
-            <asp:TextBox ID="txtDateOfBirth" runat="server"></asp:TextBox><br />
+                                    <strong>Adoption Records:</strong>
+                                    <ul>
+                                        <%# Eval("AdoptionRecords") != DBNull.Value ? Eval("AdoptionRecords") : "No adoption records available." %>
+                                    </ul>
 
-            <asp:Label ID="lblAddress" runat="server" Text="Address:" AssociatedControlID="txtAddress"></asp:Label>
-            <asp:TextBox ID="txtAddress" runat="server"></asp:TextBox><br />
+                                    <strong>Home Studies:</strong>
+                                    <ul>
+                                        <%# Eval("HomeStudies") != DBNull.Value ? Eval("HomeStudies") : "No home studies available." %>
+                                    </ul>
 
-            <asp:Label ID="lblPhoneNumber" runat="server" Text="Phone Number:" AssociatedControlID="txtPhoneNumber"></asp:Label>
-            <asp:TextBox ID="txtPhoneNumber" runat="server"></asp:TextBox><br />
-
-            <asp:Label ID="lblEmail" runat="server" Text="Email:" AssociatedControlID="txtEmail"></asp:Label>
-            <asp:TextBox ID="txtEmail" runat="server"></asp:TextBox><br />
-
-            <asp:Label ID="lblMaritalStatus" runat="server" Text="Marital Status:" AssociatedControlID="txtMaritalStatus"></asp:Label>
-            <asp:TextBox ID="txtMaritalStatus" runat="server"></asp:TextBox><br />
-
-            <asp:Label ID="lblOccupation" runat="server" Text="Occupation:" AssociatedControlID="txtOccupation"></asp:Label>
-            <asp:TextBox ID="txtOccupation" runat="server"></asp:TextBox><br />
-
-            <asp:Label ID="lblEducationLevel" runat="server" Text="Education Level:" AssociatedControlID="txtEducationLevel"></asp:Label>
-            <asp:TextBox ID="txtEducationLevel" runat="server"></asp:TextBox><br />
-
-            <asp:Button ID="btnAdd" runat="server" Text="Add" OnClick="btnAdd_Click" />
-            <asp:Button ID="btnUpdate" runat="server" Text="Update" OnClick="btnUpdate_Click" />
-            <asp:Button ID="btnDelete" runat="server" Text="Delete" OnClick="btnDelete_Click" />
-            <asp:Button ID="btnClear" runat="server" Text="Clear" OnClick="btnClear_Click" /><br /><br />
-
-            <asp:GridView ID="gvAdopters" runat="server" AutoGenerateColumns="False" OnSelectedIndexChanged="gvAdopters_SelectedIndexChanged">
-                <Columns>
-                    <asp:BoundField DataField="adopter_id" HeaderText="Adopter ID" />
-                    <asp:BoundField DataField="first_name" HeaderText="First Name" />
-                    <asp:BoundField DataField="last_name" HeaderText="Last Name" />
-                    <asp:BoundField DataField="date_of_birth" HeaderText="Date of Birth" />
-                    <asp:BoundField DataField="address" HeaderText="Address" />
-                    <asp:BoundField DataField="phone_number" HeaderText="Phone Number" />
-                    <asp:BoundField DataField="email" HeaderText="Email" />
-                    <asp:BoundField DataField="marital_status" HeaderText="Marital Status" />
-                    <asp:BoundField DataField="occupation" HeaderText="Occupation" />
-                    <asp:BoundField DataField="education_level" HeaderText="Education Level" />
-                </Columns>
-            </asp:GridView>
+                                    <a href="javascript:void(0);" class="btn btn-danger" onclick="deleteOrphanage(<%# Eval("orphanage_id") %>);">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </ItemTemplate>
+                </asp:Repeater>
+            </div>
         </div>
+
+        <script type="text/javascript">
+            function deleteOrphanage(orphanageId) {
+                if (confirm('Are you sure you want to delete this orphanage?')) {
+                    window.location.href = 'admin_crud.aspx?deleteId=' + orphanageId;
+                }
+            }
+        </script>
     </form>
 </body>
 </html>

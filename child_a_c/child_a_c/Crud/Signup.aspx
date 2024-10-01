@@ -1,63 +1,69 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Signup.aspx.cs" Inherits="child_a_c.Crud.Signup" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Signup.aspx.cs" Inherits="Signup" %>
 
 <!DOCTYPE html>
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title>Signup Page</title>
-    <style>
-        .form-group {
-            margin-bottom: 15px;
-        }
-    </style>
+<html>
+<head>
+    <title>Sign Up</title>
 </head>
 <body>
     <form id="form1" runat="server">
-        <div>
-            <h2>Signup</h2>
+        <h2>Sign Up</h2>
+        <label>Select Type:</label>
+        <asp:DropDownList ID="ddlUserType" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlUserType_SelectedIndexChanged">
+            <asp:ListItem Text="Select" Value=""></asp:ListItem>
+            <asp:ListItem Text="Adopter" Value="Adopter"></asp:ListItem>
+            <asp:ListItem Text="Orphanage" Value="Orphanage"></asp:ListItem>
+        </asp:DropDownList>
 
-            <div class="form-group">
-                <label for="userType">Select User Type:</label>
-                <asp:DropDownList ID="userType" runat="server">
-                    <asp:ListItem Value="Orphanage">Orphanage</asp:ListItem>
-                    <asp:ListItem Value="Admin">Admin</asp:ListItem>
-                    <asp:ListItem Value="Adopter">Adopter</asp:ListItem>
-                </asp:DropDownList>
-            </div>
-
-            <div class="form-group">
-                <label for="username">Username:</label>
-                <asp:TextBox ID="username" runat="server" required="required"></asp:TextBox>
-            </div>
-
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <asp:TextBox ID="password" runat="server" TextMode="Password" required="required"></asp:TextBox>
-            </div>
-
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <asp:TextBox ID="email" runat="server" required="required"></asp:TextBox>
-            </div>
-
-            <div class="form-group" id="additionalFields" runat="server" visible="false">
-                <div>
-                    <label for="additionalInfo">Additional Information:</label>
-                    <asp:TextBox ID="additionalInfo" runat="server" TextMode="MultiLine"></asp:TextBox>
-                </div>
-            </div>
-
-            <asp:Button ID="signupButton" runat="server" Text="Sign Up" OnClick="signupButton_Click" />
-
+        <!-- Adopter Form -->
+        <div id="adopterForm" runat="server" visible="false">
+            <h3>Adopter Information</h3>
+            <label>First Name:</label>
+            <asp:TextBox ID="txtFirstName" runat="server" /><br />
+            <label>Last Name:</label>
+            <asp:TextBox ID="txtLastName" runat="server" /><br />
+            <label>Password:</label>
+            <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" /><br />
+            <label>Date of Birth:</label>
+            <asp:TextBox ID="txtDateOfBirth" runat="server" /><br />
+            <label>Address:</label>
+            <asp:TextBox ID="txtAddress" runat="server" /><br />
+            <label>Phone Number:</label>
+            <asp:TextBox ID="txtPhoneNumber" runat="server" /><br />
+            <label>Email:</label>
+            <asp:TextBox ID="txtEmail" runat="server" /><br />
+            <label>Marital Status:</label>
+            <asp:TextBox ID="txtMaritalStatus" runat="server" /><br />
+            <label>Occupation:</label>
+            <asp:TextBox ID="txtOccupation" runat="server" /><br />
+            <label>Education Level:</label>
+            <asp:TextBox ID="txtEducationLevel" runat="server" /><br />
         </div>
-    </form>
 
-    <script>
-        document.getElementById('<%= userType.ClientID %>').addEventListener('change', function () {
-            var additionalFields = document.getElementById('<%= additionalFields.ClientID %>');
-            additionalFields.style.display = this.value === 'Orphanage' ? 'block' : 'none';
-            additionalFields.visible = this.value === 'Orphanage';
-        });
-    </script>
+        <!-- Orphanage Form -->
+        <div id="orphanageForm" runat="server" visible="false">
+            <h3>Orphanage Information</h3>
+            <label>Orphanage Name:</label>
+            <asp:TextBox ID="txtOrphanageName" runat="server" /><br />
+            <label>Address:</label>
+            <asp:TextBox ID="txtOrphanageAddress" runat="server" /><br />
+            <label>Phone Number:</label>
+            <asp:TextBox ID="txtOrphanagePhoneNumber" runat="server" /><br />
+            <label>Email:</label>
+            <asp:TextBox ID="txtOrphanageEmail" runat="server" /><br />
+            <label>Contact Person:</label>
+            <asp:TextBox ID="txtContactPerson" runat="server" /><br />
+            <label>Capacity:</label>
+            <asp:TextBox ID="txtCapacity" runat="server" /><br />
+            <label>Number of Children:</label>
+            <asp:TextBox ID="txtNumChildren" runat="server" /><br />
+            <label>License Number:</label>
+            <asp:TextBox ID="txtLicenseNumber" runat="server" /><br />
+            <label>Password:</label>
+            <asp:TextBox ID="txtOrphanagePassword" runat="server" TextMode="Password" /><br />
+        </div>
+
+        <asp:Button ID="btnSignUp" runat="server" Text="Sign Up" OnClick="btnSignUp_Click" />
+    </form>
 </body>
 </html>

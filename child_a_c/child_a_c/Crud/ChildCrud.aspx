@@ -1,13 +1,14 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="ChildCrud.aspx.cs" Inherits="Crud.Children" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="ChildCrud.aspx.cs" Inherits="child_a_c.Crud.ChildCrud" %>
 
 <!DOCTYPE html>
-<html>
-<head>
-    <title>Children</title>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Manage Children Records</title>
 </head>
 <body>
     <form id="form1" runat="server">
-        <h2>Manage Children</h2>
+        <h2>Manage Children Records</h2>
         <asp:GridView ID="gvChildren" runat="server" AutoGenerateColumns="False" OnSelectedIndexChanged="gvChildren_SelectedIndexChanged">
             <Columns>
                 <asp:BoundField DataField="child_id" HeaderText="Child ID" />
@@ -16,12 +17,10 @@
                 <asp:BoundField DataField="date_of_birth" HeaderText="Date of Birth" />
                 <asp:BoundField DataField="gender" HeaderText="Gender" />
                 <asp:BoundField DataField="orphanage_id" HeaderText="Orphanage ID" />
-                <asp:BoundField DataField="adopter_id" HeaderText="Adopter ID" />
                 <asp:CommandField ShowSelectButton="True" />
             </Columns>
         </asp:GridView>
 
-        <!-- Child Details -->
         <h3>Child Details</h3>
         <asp:Label Text="Child ID:" runat="server" />
         <asp:TextBox ID="txtChildID" runat="server" ReadOnly="true" /><br />
@@ -40,9 +39,6 @@
 
         <asp:Label Text="Orphanage ID:" runat="server" />
         <asp:TextBox ID="txtOrphanageID" runat="server" /><br />
-
-        <asp:Label Text="Adopter ID:" runat="server" />
-        <asp:TextBox ID="txtAdopterID" runat="server" /><br />
 
         <asp:Button ID="btnSave" runat="server" Text="Save" OnClick="btnSave_Click" />
     </form>

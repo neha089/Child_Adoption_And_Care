@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="ChildDocuments.aspx.cs" Inherits="Crud.ChildDocuments" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="ChildDocuments.aspx.cs" Inherits="child_a_c.Crud.ChildDocuments" %>
 
 <!DOCTYPE html>
 

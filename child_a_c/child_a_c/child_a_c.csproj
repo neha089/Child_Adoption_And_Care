@@ -89,9 +89,11 @@
     </Compile>
     <Compile Include="Crud\AdopterCrud.aspx.cs">
       <DependentUpon>AdopterCrud.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Crud\ChildCrud.aspx.cs">
       <DependentUpon>ChildCrud.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Crud\Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
@@ -125,6 +127,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

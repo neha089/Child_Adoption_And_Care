@@ -1,89 +1,71 @@
 ﻿using System;
 using System.Data.SqlClient;
 using System.Configuration;
-using System.Web.UI.WebControls;
-using System.Xml.Linq;
-namespace Crud
+using System.IO;
+
+namespace child_a_c.Crud
 {
-    public partial class AdopterDocuments : System.Web.UI.Page
+    public partial class AdopterDocument : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
-            {
-                LoadAdopterDocuments();
-            }
-        }
-
-        private void LoadAdopterDocuments()
-        {
-            string connectionString = ConfigurationManager.ConnectionStrings["Con1"].ConnectionString;
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                SqlCommand cmd = new SqlCommand("SELECT * FROM AdopterDocuments", conn);
-                conn.Open();
-                gvAdopterDocuments.DataSource = cmd.ExecuteReader();
-                gvAdopterDocuments.DataBind();
-            }
-        }
-
-        protected void gvAdopterDocuments_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            GridViewRow row = gvAdopterDocuments.SelectedRow;
-            txtDocumentID.Text = row.Cells[0].Text;
-            txtAdopterID.Text = row.Cells[1].Text;
-            txtDocumentType.Text = row.Cells[2].Text;
-            txtDocumentName.Text = row.Cells[3].Text;
-            txtDocumentURL.Text = row.Cells[4].Text;
-            txtUploadDate.Text = row.Cells[5].Text;
+            // No need to load documents, as we removed the GridView
         }
 
         protected void btnSave_Click(object sender, EventArgs e)
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["Con1"].ConnectionString;
-
-            // Check if the Adopter ID exists
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            if (fileUploadDocument.HasFile)
             {
-                SqlCommand checkAdopterCmd = new SqlCommand("SELECT COUNT(*) FROM Adopters WHERE adopter_id = @AdopterID", conn);
-                checkAdopterCmd.Parameters.AddWithValue("@AdopterID", txtAdopterID.Text);
-
-                conn.Open();
-                int count = (int)checkAdopterCmd.ExecuteScalar();
-
-                if (count == 0)
+                try
                 {
-                    // Adopter ID does not exist, handle accordingly
-                    // e.g., show a message or throw an exception
-                    ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Adopter ID does not exist. Please check and try again.');", true);
-                    return;
+                    // Define the folder where the document will be uploaded
+                    string folderPath = Server.MapPath("~/Document/");
+
+                    // Check if the directory exists; if not, create it
+                    if (!Directory.Exists(folderPath))
+                    {
+                        Directory.CreateDirectory(folderPath);
+                    }
+
+                    // Create the full path to save the uploaded file
+                    string fileName = Path.GetFileName(fileUploadDocument.FileName);
+                    string uploadPath = Path.Combine(folderPath, fileName);
+
+                    // Save the file to the server
+                    fileUploadDocument.SaveAs(uploadPath);
+
+                    // Save document details to the database
+                    string connectionString = ConfigurationManager.ConnectionStrings["Database1"].ConnectionString;
+                    using (SqlConnection conn = new SqlConnection(connectionString))
+                    {
+                        conn.Open();
+                        SqlCommand cmd = new SqlCommand("INSERT INTO AdopterDocuments (adopter_id, document_type, document_name, document_url, upload_date) VALUES (@AdopterID, @DocumentType, @DocumentName, @DocumentURL, @UploadDate)", conn);
+
+                        cmd.Parameters.AddWithValue("@AdopterID", txtAdopterID.Text);
+                        cmd.Parameters.AddWithValue("@DocumentType", txtDocumentType.Text);
+                        cmd.Parameters.AddWithValue("@DocumentName", fileName);
+                        cmd.Parameters.AddWithValue("@DocumentURL", uploadPath);
+                        cmd.Parameters.AddWithValue("@UploadDate", DateTime.Now);
+
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    // Display success message
+                    lblMessage.Text = "Document uploaded successfully!";
+                    lblMessage.ForeColor = System.Drawing.Color.Green;
+                }
+                catch (Exception ex)
+                {
+                    // Handle any errors that may have occurred
+                    lblMessage.Text = "Error: " + ex.Message;
+                    lblMessage.ForeColor = System.Drawing.Color.Red;
                 }
             }
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            else
             {
-                SqlCommand cmd;
-                if (string.IsNullOrEmpty(txtDocumentID.Text))
-                {
-                    cmd = new SqlCommand("INSERT INTO AdopterDocuments (adopter_id, document_type, document_name, document_url, upload_date) VALUES (@AdopterID, @DocumentType, @DocumentName, @DocumentURL, @UploadDate)", conn);
-                }
-                else
-                {
-                    cmd = new SqlCommand("UPDATE AdopterDocuments SET adopter_id = @AdopterID, document_type = @DocumentType, document_name = @DocumentName, document_url = @DocumentURL, upload_date = @UploadDate WHERE document_id = @DocumentID", conn);
-                    cmd.Parameters.AddWithValue("@DocumentID", txtDocumentID.Text);
-                }
-
-                cmd.Parameters.AddWithValue("@AdopterID", txtAdopterID.Text);
-                cmd.Parameters.AddWithValue("@DocumentType", txtDocumentType.Text);
-                cmd.Parameters.AddWithValue("@DocumentName", txtDocumentName.Text);
-                cmd.Parameters.AddWithValue("@DocumentURL", txtDocumentURL.Text);
-                cmd.Parameters.AddWithValue("@UploadDate", txtUploadDate.Text);
-
-                conn.Open();
-                cmd.ExecuteNonQuery();
-                LoadAdopterDocuments();
+                lblMessage.Text = "Please select a document to upload.";
+                lblMessage.ForeColor = System.Drawing.Color.Red;
             }
         }
-
     }
 }

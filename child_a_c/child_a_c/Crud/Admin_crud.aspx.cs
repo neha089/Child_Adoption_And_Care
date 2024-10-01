@@ -2,121 +2,119 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
-using System.Web.UI.WebControls;
 
-namespace Crud
+public partial class admin_crud : System.Web.UI.Page
 {
-    public partial class Adopters : System.Web.UI.Page
+    protected void Page_Load(object sender, EventArgs e)
     {
-        string connectionString = ConfigurationManager.ConnectionStrings["Con1"].ConnectionString;
-
-        protected void Page_Load(object sender, EventArgs e)
+        if (!IsPostBack)
         {
-            if (!IsPostBack)
+            // Check if deleteId is present in the query string
+            if (Request.QueryString["deleteId"] != null)
             {
-                BindGridView();
+                int orphanageId = Convert.ToInt32(Request.QueryString["deleteId"]);
+                DeleteOrphanage(orphanageId);
             }
-        }
 
-        protected void btnAdd_Click(object sender, EventArgs e)
-        {
-            using (SqlConnection con = new SqlConnection(connectionString))
-            {
-                con.Open();
-                SqlCommand cmd = new SqlCommand("INSERT INTO Adopters (first_name, last_name, date_of_birth, address, phone_number, email, marital_status, occupation, education_level) VALUES (@FirstName, @LastName, @DOB, @Address, @Phone, @Email, @MaritalStatus, @Occupation, @Education)", con);
-                cmd.Parameters.AddWithValue("@FirstName", txtFirstName.Text);
-                cmd.Parameters.AddWithValue("@LastName", txtLastName.Text);
-                cmd.Parameters.AddWithValue("@DOB", Convert.ToDateTime(txtDateOfBirth.Text));
-                cmd.Parameters.AddWithValue("@Address", txtAddress.Text);
-                cmd.Parameters.AddWithValue("@Phone", txtPhoneNumber.Text);
-                cmd.Parameters.AddWithValue("@Email", txtEmail.Text);
-                cmd.Parameters.AddWithValue("@MaritalStatus", txtMaritalStatus.Text);
-                cmd.Parameters.AddWithValue("@Occupation", txtOccupation.Text);
-                cmd.Parameters.AddWithValue("@Education", txtEducationLevel.Text);
-
-                cmd.ExecuteNonQuery();
-                BindGridView();
-            }
-        }
-
-        protected void btnUpdate_Click(object sender, EventArgs e)
-        {
-            using (SqlConnection con = new SqlConnection(connectionString))
-            {
-                con.Open();
-                SqlCommand cmd = new SqlCommand("UPDATE Adopters SET first_name=@FirstName, last_name=@LastName, date_of_birth=@DOB, address=@Address, phone_number=@Phone, email=@Email, marital_status=@MaritalStatus, occupation=@Occupation, education_level=@Education WHERE adopter_id=@AdopterID", con);
-                cmd.Parameters.AddWithValue("@AdopterID", Convert.ToInt32(txtAdopterId.Text));
-                cmd.Parameters.AddWithValue("@FirstName", txtFirstName.Text);
-                cmd.Parameters.AddWithValue("@LastName", txtLastName.Text);
-                cmd.Parameters.AddWithValue("@DOB", Convert.ToDateTime(txtDateOfBirth.Text));
-                cmd.Parameters.AddWithValue("@Address", txtAddress.Text);
-                cmd.Parameters.AddWithValue("@Phone", txtPhoneNumber.Text);
-                cmd.Parameters.AddWithValue("@Email", txtEmail.Text);
-                cmd.Parameters.AddWithValue("@MaritalStatus", txtMaritalStatus.Text);
-                cmd.Parameters.AddWithValue("@Occupation", txtOccupation.Text);
-                cmd.Parameters.AddWithValue("@Education", txtEducationLevel.Text);
-
-                cmd.ExecuteNonQuery();
-                BindGridView();
-            }
-        }
-
-        protected void btnDelete_Click(object sender, EventArgs e)
-        {
-            using (SqlConnection con = new SqlConnection(connectionString))
-            {
-                con.Open();
-                SqlCommand cmd = new SqlCommand("DELETE FROM Adopters WHERE adopter_id=@AdopterID", con);
-                cmd.Parameters.AddWithValue("@AdopterID", Convert.ToInt32(txtAdopterId.Text));
-                cmd.ExecuteNonQuery();
-                BindGridView();
-            }
-        }
-
-        protected void btnClear_Click(object sender, EventArgs e)
-        {
-            ClearFields();
-        }
-
-        private void ClearFields()
-        {
-            txtAdopterId.Text = "";
-            txtFirstName.Text = "";
-            txtLastName.Text = "";
-            txtDateOfBirth.Text = "";
-            txtAddress.Text = "";
-            txtPhoneNumber.Text = "";
-            txtEmail.Text = "";
-            txtMaritalStatus.Text = "";
-            txtOccupation.Text = "";
-            txtEducationLevel.Text = "";
-        }
-
-        private void BindGridView()
-        {
-            using (SqlConnection con = new SqlConnection(connectionString))
-            {
-                SqlDataAdapter sda = new SqlDataAdapter("SELECT * FROM Adopters", con);
-                DataTable dt = new DataTable();
-                sda.Fill(dt);
-                gvAdopters.DataSource = dt;
-                gvAdopters.DataBind();
-            }
-        }
-
-        protected void gvAdopters_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            GridViewRow row = gvAdopters.SelectedRow;
-            txtAdopterId.Text = row.Cells[1].Text;
-            txtFirstName.Text = row.Cells[2].Text;
-            txtLastName.Text = row.Cells[3].Text;
-            txtDateOfBirth.Text = row.Cells[4].Text;
-            txtAddress.Text = row.Cells[5].Text;
-            txtPhoneNumber.Text = row.Cells[6].Text;
-            txtEmail.Text = row.Cells[7].Text;
-            txtMaritalStatus.Text = row.Cells[8].Text;
-            txtOccupation.Text = row.Cells[9].Text;
-            txtEducationLevel.Text = row.Cells[10].Text;
+            // Load orphanages after deletion or on initial load
+            LoadOrphanages();
         }
     }
+
+    private void LoadOrphanages()
+    {
+        string query = @"
+            SELECT o.*, 
+                (SELECT STRING_AGG(document_name, ', ') 
+                 FROM OrphanageDocuments 
+                 WHERE orphanage_id = o.orphanage_id) AS OrphanageDocuments,
+                (SELECT STRING_AGG(CONCAT('Child ID: ', child_id, ', Date: ', adoption_date, ', Status: ', adoption_status), '; ') 
+                 FROM AdoptionRecords 
+                 WHERE orphanage_id = o.orphanage_id) AS AdoptionRecords,
+                (SELECT STRING_AGG(CONCAT('Child ID: ', child_id, ', Study Date: ', date_of_study), '; ') 
+                 FROM HomeStudies 
+                 WHERE orphanage_id = o.orphanage_id) AS HomeStudies
+            FROM Orphanages o";
+
+        DataTable dt = GetData(query);
+        OrphanageRepeater.DataSource = dt;
+        OrphanageRepeater.DataBind();
+    }
+    private void DeleteOrphanage(int orphanageId)
+    {
+        string query = "DELETE FROM Orphanages WHERE orphanage_id = @orphanage_id";
+
+        string connectionString = ConfigurationManager.ConnectionStrings["Database1"].ConnectionString;
+        using (SqlConnection conn = new SqlConnection(connectionString))
+        {
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@orphanage_id", orphanageId);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+        }
+
+        // Cascade deletes should automatically remove related child records (AdoptionRecords, HomeStudies, etc.)
+    }
+
+    private DataTable GetData(string query)
+    {
+        string connectionString = ConfigurationManager.ConnectionStrings["Database1"].ConnectionString;
+        using (SqlConnection conn = new SqlConnection(connectionString))
+        {
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
+                {
+                    DataTable dt = new DataTable();
+                    sda.Fill(dt);
+                    return dt;
+                }
+            }
+        }
+    }
+    
+
+    protected string FormatDocuments(object orphanageId)
+    {
+        int id = Convert.ToInt32(orphanageId);
+        string query = $"SELECT document_name, document_url FROM OrphanageDocuments WHERE orphanage_id = {id}";
+        DataTable dt = GetData(query);
+        string result = string.Empty;
+        foreach (DataRow row in dt.Rows)
+        {
+            result += $"<li><a href=\"{row["document_url"]}\">{row["document_name"]}</a></li>";
+        }
+        return result;
+    }
+
+   
+
+    protected string FormatAdoptionRecords(object orphanageId)
+    {
+        // Assuming you are linking records via child_id or adopter_id
+        string query = $"SELECT child_id, adoption_date, adoption_status FROM AdoptionRecords WHERE adopter_id IN (SELECT adopter_id FROM HomeStudies WHERE orphanage_id = {orphanageId})";
+        DataTable dt = GetData(query);
+        string result = string.Empty;
+        foreach (DataRow row in dt.Rows)
+        {
+            result += $"<li>Child ID: {row["child_id"]}, Date: {Convert.ToDateTime(row["adoption_date"]).ToShortDateString()}, Status: {row["adoption_status"]}</li>";
+        }
+        return result;
+    }
+
+    protected string FormatHomeStudies(object orphanageId)
+    {
+        string query = $"SELECT * FROM HomeStudies WHERE adopter_id IN (SELECT adopter_id FROM AdoptionRecords WHERE orphanage_id = {orphanageId})";
+        DataTable dt = GetData(query);
+        string result = string.Empty;
+        foreach (DataRow row in dt.Rows)
+        {
+            result += $"<li>Report: <a href=\"{row["home_study_report_url"]}\">{Convert.ToDateTime(row["date_of_study"]).ToShortDateString()}</a></li>";
+        }
+        return result;
+    }
+
 }

@@ -1,21 +1,23 @@
 ﻿using System;
 using System.Data.SqlClient;
 using System.Configuration;
-using System.Web.UI.WebControls;
+using System.Web.UI.WebControls; // Ensure this is included
+using child_a_c.Crud;
+using System.Web.Security;
 
-namespace Crud
+namespace child_a_c.Crud
 {
-    public partial class Children : System.Web.UI.Page
+    public partial class ChildCrud : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                LoadChildren();
+                LoadChildrenRecords();
             }
         }
 
-        private void LoadChildren()
+        private void LoadChildrenRecords()
         {
             string connectionString = ConfigurationManager.ConnectionStrings["Database1"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -36,7 +38,6 @@ namespace Crud
             txtDateOfBirth.Text = row.Cells[3].Text;
             txtGender.Text = row.Cells[4].Text;
             txtOrphanageID.Text = row.Cells[5].Text;
-            txtAdopterID.Text = row.Cells[6].Text;
         }
 
         protected void btnSave_Click(object sender, EventArgs e)
@@ -47,11 +48,11 @@ namespace Crud
                 SqlCommand cmd;
                 if (string.IsNullOrEmpty(txtChildID.Text))
                 {
-                    cmd = new SqlCommand("INSERT INTO Children (first_name, last_name, date_of_birth, gender, orphanage_id, adopter_id) VALUES (@FirstName, @LastName, @DateOfBirth, @Gender, @OrphanageID, @AdopterID)", conn);
+                    cmd = new SqlCommand("INSERT INTO Children (first_name, last_name, date_of_birth, gender, orphanage_id) VALUES (@FirstName, @LastName, @DateOfBirth, @Gender, @OrphanageID)", conn);
                 }
                 else
                 {
-                    cmd = new SqlCommand("UPDATE Children SET first_name = @FirstName, last_name = @LastName, date_of_birth = @DateOfBirth, gender = @Gender, orphanage_id = @OrphanageID, adopter_id = @AdopterID WHERE child_id = @ChildID", conn);
+                    cmd = new SqlCommand("UPDATE Children SET first_name = @FirstName, last_name = @LastName, date_of_birth = @DateOfBirth, gender = @Gender, orphanage_id = @OrphanageID WHERE child_id = @ChildID", conn);
                     cmd.Parameters.AddWithValue("@ChildID", txtChildID.Text);
                 }
 
@@ -60,11 +61,29 @@ namespace Crud
                 cmd.Parameters.AddWithValue("@DateOfBirth", txtDateOfBirth.Text);
                 cmd.Parameters.AddWithValue("@Gender", txtGender.Text);
                 cmd.Parameters.AddWithValue("@OrphanageID", txtOrphanageID.Text);
-                cmd.Parameters.AddWithValue("@AdopterID", txtAdopterID.Text);
 
                 conn.Open();
                 cmd.ExecuteNonQuery();
-                LoadChildren();
+                LoadChildrenRecords();
+            }
+        }
+        protected void handleLogout(object sender, EventArgs e)
+        {
+            FormsAuthentication.SignOut();
+            Response.Redirect("~/Crud/Login.aspx");
+        }
+        public void CreateChild(string email, string username, string password)
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["Database1"].ConnectionString;
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("INSERT INTO Children (email, name, password) VALUES (@Email, @Name, @Password)", conn);
+                cmd.Parameters.AddWithValue("@Email", email);
+                cmd.Parameters.AddWithValue("@Name", username);
+                cmd.Parameters.AddWithValue("@Password", password);
+
+                conn.Open();
+                cmd.ExecuteNonQuery();
             }
         }
     }
