@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="HomeStudies.aspx.cs" Inherits="child_a_c.Crud.HomeStudies" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="HomeStudies.aspx.cs" Inherits="Crud.HomeStudies" %>
 
 <!DOCTYPE html>
 
@@ -34,7 +34,7 @@
         <asp:TextBox ID="txtChildID" runat="server" /><br />
 
         <asp:Label Text="Date of Study:" runat="server" />
-        <asp:TextBox ID="txtDateOfStudy" runat="server" /><br />
+        <asp:TextBox ID="txtDateOfStudy" runat="server" TextMode="Date"/><br />
 
         <asp:Label Text="Home Study Report URL:" runat="server" />
         <asp:TextBox ID="txtHomeStudyReportURL" runat="server" /><br />

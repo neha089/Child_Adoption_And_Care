@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace child_a_c.Crud
+namespace Crud
 {
 
 

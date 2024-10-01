@@ -1,70 +1,70 @@
 ﻿using System;
 using System.Data.SqlClient;
 using System.Configuration;
-using System.Web.UI.WebControls;
-using System.Xml.Linq;
+using System.IO;
 
 namespace child_a_c.Crud
 {
     public partial class AdopterDocument : System.Web.UI.Page
     {
-
-    protected void Page_Load(object sender, EventArgs e)
+        protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
-            {
-                LoadAdopterDocuments();
-            }
-        }
-
-        private void LoadAdopterDocuments()
-        {
-            string connectionString = ConfigurationManager.ConnectionStrings["Database1"].ConnectionString;
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                SqlCommand cmd = new SqlCommand("SELECT * FROM AdopterDocuments", conn);
-                conn.Open();
-                gvAdopterDocuments.DataSource = cmd.ExecuteReader();
-                gvAdopterDocuments.DataBind();
-            }
-        }
-
-        protected void gvAdopterDocuments_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            GridViewRow row = gvAdopterDocuments.SelectedRow;
-            txtDocumentID.Text = row.Cells[0].Text;
-            txtAdopterID.Text = row.Cells[1].Text;
-            txtDocumentType.Text = row.Cells[2].Text;
-            txtDocumentName.Text = row.Cells[3].Text;
-            txtDocumentURL.Text = row.Cells[4].Text;
-            txtUploadDate.Text = row.Cells[5].Text;
+            // No need to load documents, as we removed the GridView
         }
 
         protected void btnSave_Click(object sender, EventArgs e)
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["Database1"].ConnectionString;
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            if (fileUploadDocument.HasFile)
             {
-                SqlCommand cmd;
-                if (string.IsNullOrEmpty(txtDocumentID.Text))
+                try
                 {
-                    cmd = new SqlCommand("INSERT INTO AdopterDocuments (adopter_id, document_type, document_name, document_url, upload_date) VALUES (@AdopterID, @DocumentType, @DocumentName, @DocumentURL, @UploadDate)", conn);
+                    // Define the folder where the document will be uploaded
+                    string folderPath = Server.MapPath("~/Document/");
+
+                    // Check if the directory exists; if not, create it
+                    if (!Directory.Exists(folderPath))
+                    {
+                        Directory.CreateDirectory(folderPath);
+                    }
+
+                    // Create the full path to save the uploaded file
+                    string fileName = Path.GetFileName(fileUploadDocument.FileName);
+                    string uploadPath = Path.Combine(folderPath, fileName);
+
+                    // Save the file to the server
+                    fileUploadDocument.SaveAs(uploadPath);
+
+                    // Save document details to the database
+                    string connectionString = ConfigurationManager.ConnectionStrings["Database1"].ConnectionString;
+                    using (SqlConnection conn = new SqlConnection(connectionString))
+                    {
+                        conn.Open();
+                        SqlCommand cmd = new SqlCommand("INSERT INTO AdopterDocuments (adopter_id, document_type, document_name, document_url, upload_date) VALUES (@AdopterID, @DocumentType, @DocumentName, @DocumentURL, @UploadDate)", conn);
+
+                        cmd.Parameters.AddWithValue("@AdopterID", txtAdopterID.Text);
+                        cmd.Parameters.AddWithValue("@DocumentType", txtDocumentType.Text);
+                        cmd.Parameters.AddWithValue("@DocumentName", fileName);
+                        cmd.Parameters.AddWithValue("@DocumentURL", uploadPath);
+                        cmd.Parameters.AddWithValue("@UploadDate", DateTime.Now);
+
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    // Display success message
+                    lblMessage.Text = "Document uploaded successfully!";
+                    lblMessage.ForeColor = System.Drawing.Color.Green;
                 }
-                else
+                catch (Exception ex)
                 {
-                    cmd = new SqlCommand("UPDATE AdopterDocuments SET adopter_id = @AdopterID, document_type = @DocumentType, document_name = @DocumentName, document_url = @DocumentURL, upload_date = @UploadDate WHERE document_id = @DocumentID", conn);
-                    cmd.Parameters.AddWithValue("@DocumentID", txtDocumentID.Text);
+                    // Handle any errors that may have occurred
+                    lblMessage.Text = "Error: " + ex.Message;
+                    lblMessage.ForeColor = System.Drawing.Color.Red;
                 }
-
-                cmd.Parameters.AddWithValue("@AdopterID", txtAdopterID.Text);
-                cmd.Parameters.AddWithValue("@DocumentType", txtDocumentType.Text);
-                cmd.Parameters.AddWithValue("@DocumentName", txtDocumentName.Text);
-                cmd.Parameters.AddWithValue("@DocumentURL", txtDocumentURL.Text);
-                cmd.Parameters.AddWithValue("@UploadDate", txtUploadDate.Text);
-
-                conn.Open();
-                cmd.ExecuteNonQuery();
-                LoadAdopterDocuments();
+            }
+            else
+            {
+                lblMessage.Text = "Please select a document to upload.";
+                lblMessage.ForeColor = System.Drawing.Color.Red;
             }
         }
     }

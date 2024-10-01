@@ -8,6 +8,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            margin: 20px;
         }
         h2 {
             color: #333;
@@ -18,29 +19,29 @@
         .form-control {
             margin-bottom: 10px;
         }
+        .form-control input {
+            padding: 5px;
+            width: 300px;
+        }
+        .form-control button {
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .form-control button:hover {
+            background-color: #0056b3;
+        }
+        #lblMessage {
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
     <form id="form1" runat="server">
         <div>
             <h2>Manage Application Records</h2>
-            <asp:GridView ID="gvApplicationRecords" runat="server" AutoGenerateColumns="False" OnSelectedIndexChanged="gvApplicationRecords_SelectedIndexChanged">
-                <Columns>
-                    <asp:BoundField DataField="application_id" HeaderText="Application ID" />
-                    <asp:BoundField DataField="adopter_id" HeaderText="Adopter ID" />
-                    <asp:BoundField DataField="orphanage_id" HeaderText="Orphanage ID" />
-                    <asp:BoundField DataField="child_id" HeaderText="Child ID" />
-                    <asp:BoundField DataField="application_date" HeaderText="Application Date" DataFormatString="{0:yyyy-MM-dd}" />
-                    <asp:BoundField DataField="status" HeaderText="Status" />
-                    <asp:CommandField ShowSelectButton="True" />
-                </Columns>
-            </asp:GridView>
-
-            <h3>Application Details</h3>
-            <div class="form-control">
-                <asp:Label Text="Application ID:" runat="server" />
-                <asp:TextBox ID="txtApplicationID" runat="server" ReadOnly="true" />
-            </div>
             <div class="form-control">
                 <asp:Label Text="Adopter ID:" runat="server" />
                 <asp:TextBox ID="txtAdopterID" runat="server" />
@@ -55,7 +56,7 @@
             </div>
             <div class="form-control">
                 <asp:Label Text="Application Date:" runat="server" />
-                <asp:TextBox ID="txtApplicationDate" runat="server" />
+                <asp:TextBox ID="txtApplicationDate" runat="server" TextMode="Date" />
             </div>
             <div class="form-control">
                 <asp:Label Text="Status:" runat="server" />
@@ -63,6 +64,9 @@
             </div>
             <div class="form-control">
                 <asp:Button ID="btnSave" runat="server" Text="Save" OnClick="btnSave_Click" />
+            </div>
+            <div class="form-control">
+                <asp:Label ID="lblMessage" runat="server" />
             </div>
         </div>
     </form>

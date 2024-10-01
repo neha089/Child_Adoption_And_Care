@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Data.SqlClient;
 using System.Configuration;
-using System.Web.UI.WebControls; // Add this line
-using child_a_c.Crud;
 
 namespace child_a_c.Crud
 {
@@ -10,32 +8,7 @@ namespace child_a_c.Crud
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
-            {
-                LoadApplicationRecords();
-            }
-        }
-
-        private void LoadApplicationRecords()
-        {
-            string connectionString = ConfigurationManager.ConnectionStrings["Database1"].ConnectionString;
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                SqlCommand cmd = new SqlCommand("SELECT * FROM ApplicationRecords", conn);
-                conn.Open();
-                gvApplicationRecords.DataSource = cmd.ExecuteReader();
-                gvApplicationRecords.DataBind();
-            }
-        }
-
-        protected void gvApplicationRecords_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            GridViewRow row = gvApplicationRecords.SelectedRow;
-            txtApplicationID.Text = row.Cells[0].Text;
-            txtAdopterID.Text = row.Cells[1].Text;
-            txtChildID.Text = row.Cells[2].Text;
-            txtApplicationDate.Text = row.Cells[3].Text;
-            txtStatus.Text = row.Cells[4].Text;
+            // No need to load records on page load as GridView has been removed
         }
 
         protected void btnSave_Click(object sender, EventArgs e)
@@ -44,24 +17,25 @@ namespace child_a_c.Crud
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 SqlCommand cmd;
-                if (string.IsNullOrEmpty(txtApplicationID.Text))
+                if (string.IsNullOrEmpty(txtAdopterID.Text))
                 {
-                    cmd = new SqlCommand("INSERT INTO ApplicationRecords (adopter_id, child_id, application_date, status) VALUES (@AdopterID, @ChildID, @ApplicationDate, @Status)", conn);
-                }
-                else
-                {
-                    cmd = new SqlCommand("UPDATE ApplicationRecords SET adopter_id = @AdopterID, child_id = @ChildID, application_date = @ApplicationDate, status = @Status WHERE application_id = @ApplicationID", conn);
-                    cmd.Parameters.AddWithValue("@ApplicationID", txtApplicationID.Text);
+                    lblMessage.Text = "Please provide an Adopter ID.";
+                    lblMessage.ForeColor = System.Drawing.Color.Red;
+                    return;
                 }
 
+                cmd = new SqlCommand("INSERT INTO ApplicationRecords (adopter_id, orphanage_id, child_id, application_date, status) VALUES (@AdopterID, @OrphanageID, @ChildID, @ApplicationDate, @Status)", conn);
+
                 cmd.Parameters.AddWithValue("@AdopterID", txtAdopterID.Text);
+                cmd.Parameters.AddWithValue("@OrphanageID", txtOrphanageID.Text);
                 cmd.Parameters.AddWithValue("@ChildID", txtChildID.Text);
-                cmd.Parameters.AddWithValue("@ApplicationDate", txtApplicationDate.Text);
+                cmd.Parameters.AddWithValue("@ApplicationDate", DateTime.Parse(txtApplicationDate.Text));
                 cmd.Parameters.AddWithValue("@Status", txtStatus.Text);
 
                 conn.Open();
                 cmd.ExecuteNonQuery();
-                LoadApplicationRecords();
+                lblMessage.Text = "Application record saved successfully!";
+                lblMessage.ForeColor = System.Drawing.Color.Green;
             }
         }
     }
