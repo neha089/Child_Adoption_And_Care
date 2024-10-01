@@ -67,6 +67,7 @@ public partial class Login : System.Web.UI.Page
                         FormsAuthentication.SetAuthCookie(email, false);
                         Session["AdopterID"] = adopterId.ToString(); // Store Adopter ID in session
                         Response.Redirect("AdopterCrud.aspx");
+                        Session["AdopterID"] = adopterId;
                         return;
                     }
                     else
