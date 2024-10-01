@@ -1,14 +1,16 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="OrphanageCrud.aspx.cs" Inherits="child_a_c.Crud.OrphanageCrud" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="OrphanageCrud.aspx.cs" Inherits="child_a_c.Crud.OrphanageCrud" %>
 
 <!DOCTYPE html>
-
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title></title>
+    <title>Orphanage Details</title>
 </head>
 <body>
     <form id="form1" runat="server">
-      
+        <div>
+            <h3>Orphanage List</h3>
+            <asp:GridView ID="gvOrphanages" runat="server" AutoGenerateColumns="true" OnSelectedIndexChanged="gvOrphanages_SelectedIndexChanged"></asp:GridView>
+
             <h3>Orphanage Details</h3>
             <asp:Label Text="Orphanage ID:" runat="server" />
             <asp:TextBox ID="txtOrphanageID" runat="server" ReadOnly="true" /><br />
@@ -37,15 +39,9 @@
             <asp:Label Text="License Number:" runat="server" />
             <asp:TextBox ID="txtLicenseNumber" runat="server" /><br />
 
-        <asp:Label Text="Password:" runat="server" />
-            <asp:TextBox ID="txtPassword" TextMode="Password" runat="server" /><br />
+            <asp:Button ID="btnSave" runat="server" Text="Save" OnClick="btnSave_Click" /><br />
 
-            <asp:Label Text="Confirm Password:" runat="server" />
-            <asp:TextBox ID="txtConfirmPassword" TextMode="Password" runat="server" /><br />
-
-            <asp:Button ID="btnSave" runat="server" Text="Save" OnClick="btnSave_Click" />
-
-            <asp:Button ID ="btnlogout" runat ="server" Text="Logout" OnClick="handleLogout" />
+            <asp:Button ID="btnlogout" runat="server" Text="Logout" OnClick="handleLogout" />
         </div>
     </form>
 </body>

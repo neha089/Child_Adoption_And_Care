@@ -1,8 +1,14 @@
-﻿CREATE TABLE [dbo].[Users] (
-    [user_id]       INT            IDENTITY (1, 1) NOT NULL,
-    [username]      NVARCHAR (100) NOT NULL,
-    [password]      NVARCHAR (255) NOT NULL,  -- Ensure to hash the password
-    [user_type]     NVARCHAR (20)  NOT NULL,  -- Could be 'Admin', 'Adopter', or 'Orphanage'
-    [user_ref_id]   INT            NOT NULL,  -- FK for Adopter/Orphanage/Admin
-    PRIMARY KEY CLUSTERED ([user_id] ASC)
+﻿
+CREATE TABLE Adopters (
+    adopter_id INT PRIMARY KEY IDENTITY(1,1),
+    first_name NVARCHAR(100) NOT NULL,
+    last_name NVARCHAR(100) NOT NULL,
+    password NVARCHAR(100) NOT NULL,
+    date_of_birth DATE NOT NULL,
+    address NVARCHAR(255) NOT NULL,
+    phone_number NVARCHAR(20) NOT NULL,
+    email NVARCHAR(100) NOT NULL,
+    marital_status NVARCHAR(50) NOT NULL,
+    occupation NVARCHAR(100) NULL,
+    education_level NVARCHAR(100) NULL
 );
