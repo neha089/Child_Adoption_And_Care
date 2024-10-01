@@ -1,19 +1,15 @@
 ﻿using System;
 using System.Configuration;
 using System.Data.SqlClient;
-using System.Web.Security;
+using System.IO;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Xml.Linq;
 
 namespace child_a_c.Crud
 {
     public partial class OrphanageCrud : Page
     {
-        // Remove this line
-        // protected HtmlForm form1;
-
-        
-
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -43,50 +39,56 @@ namespace child_a_c.Crud
             GridViewRow row = gvOrphanages.SelectedRow;
             txtOrphanageID.Text = row.Cells[0].Text;
             txtName.Text = row.Cells[1].Text;
-            txtAddress.Text = row.Cells[2].Text;
-            txtPhoneNumber.Text = row.Cells[3].Text;
-            txtEmail.Text = row.Cells[4].Text;
-            txtContactPerson.Text = row.Cells[5].Text;
-            txtCapacity.Text = row.Cells[6].Text;
-            txtNumberOfChildren.Text = row.Cells[7].Text;
-            txtLicenseNumber.Text = row.Cells[8].Text;
+            // Set other orphanage details
         }
 
-        protected void btnSave_Click(object sender, EventArgs e)
+        protected void btnSaveChild_Click(object sender, EventArgs e)
         {
             string connectionString = ConfigurationManager.ConnectionStrings["Database1"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                SqlCommand cmd;
-                if (string.IsNullOrEmpty(txtOrphanageID.Text))
-                {
-                    cmd = new SqlCommand("INSERT INTO Orphanages (name, address, phone_number, email, contact_person, capacity, number_of_children, license_number) VALUES (@Name, @Address, @PhoneNumber, @Email, @ContactPerson, @Capacity, @NumberOfChildren, @LicenseNumber)", conn);
-                }
-                else
-                {
-                    cmd = new SqlCommand("UPDATE Orphanages SET name = @Name, address = @Address, phone_number = @PhoneNumber, email = @Email, contact_person = @ContactPerson, capacity = @Capacity, number_of_children = @NumberOfChildren, license_number = @LicenseNumber WHERE orphanage_id = @OrphanageID", conn);
-                    cmd.Parameters.AddWithValue("@OrphanageID", txtOrphanageID.Text);
-                }
+                // Insert child
+                SqlCommand cmd = new SqlCommand("INSERT INTO Children (first_name, last_name, date_of_birth, gender, orphanage_id, medical_history, education_level, special_needs, profile_image) OUTPUT INSERTED.child_id VALUES (@FirstName, @LastName, @DateOfBirth, @Gender, @OrphanageID, @MedicalHistory, @EducationLevel, @SpecialNeeds, @ProfileImage)", conn);
 
-                cmd.Parameters.AddWithValue("@Name", txtName.Text);
-                cmd.Parameters.AddWithValue("@Address", txtAddress.Text);
-                cmd.Parameters.AddWithValue("@PhoneNumber", txtPhoneNumber.Text);
-                cmd.Parameters.AddWithValue("@Email", txtEmail.Text);
-                cmd.Parameters.AddWithValue("@ContactPerson", txtContactPerson.Text);
-                cmd.Parameters.AddWithValue("@Capacity", txtCapacity.Text);
-                cmd.Parameters.AddWithValue("@NumberOfChildren", txtNumberOfChildren.Text);
-                cmd.Parameters.AddWithValue("@LicenseNumber", txtLicenseNumber.Text);
+                cmd.Parameters.AddWithValue("@FirstName", txtChildFirstName.Text);
+                cmd.Parameters.AddWithValue("@LastName", txtChildLastName.Text);
+                cmd.Parameters.AddWithValue("@DateOfBirth", txtChildDateOfBirth.Text);
+                cmd.Parameters.AddWithValue("@Gender", ddlGender.SelectedValue);
+                cmd.Parameters.AddWithValue("@OrphanageID", txtOrphanageID.Text);
+                cmd.Parameters.AddWithValue("@MedicalHistory", txtMedicalHistory.Text);
+                cmd.Parameters.AddWithValue("@EducationLevel", txtEducationLevel.Text);
+                cmd.Parameters.AddWithValue("@SpecialNeeds", txtSpecialNeeds.Text);
+
+                string profileImageUrl = string.Empty;
+                if (fuProfileImage.HasFile)
+                {
+                    string profileImageName = Path.GetFileName(fuProfileImage.FileName);
+                    profileImageUrl = "Images/" + profileImageName;
+                    fuProfileImage.SaveAs(Server.MapPath("~/" + profileImageUrl));
+                }
+                cmd.Parameters.AddWithValue("@ProfileImage", profileImageUrl);
 
                 conn.Open();
-                cmd.ExecuteNonQuery();
-                LoadOrphanages();  // Reload orphanages after save
-            }
-        }
+                int childId = (int)cmd.ExecuteScalar();
 
-        protected void handleLogout(object sender, EventArgs e)
-        {
-            FormsAuthentication.SignOut();
-            Response.Redirect("~/Crud/Login.aspx");
+                // Insert document if available
+                if (fuDocument.HasFile)
+                {
+                    string documentName = Path.GetFileName(fuDocument.FileName);
+                    string documentUrl = "Documents/" + documentName;
+                    fuDocument.SaveAs(Server.MapPath("~/" + documentUrl));
+
+                    SqlCommand docCmd = new SqlCommand("INSERT INTO ChildDocuments (child_id, document_type, document_name, document_url, upload_date) VALUES (@ChildID, @DocumentType, @DocumentName, @DocumentUrl, @UploadDate)", conn);
+                    docCmd.Parameters.AddWithValue("@ChildID", childId);
+                    docCmd.Parameters.AddWithValue("@DocumentType", txtDocumentType.Text);
+                    docCmd.Parameters.AddWithValue("@DocumentName", txtDocumentName.Text);
+                    docCmd.Parameters.AddWithValue("@DocumentUrl", documentUrl);
+                    docCmd.Parameters.AddWithValue("@UploadDate", DateTime.Now);
+                    docCmd.ExecuteNonQuery();
+                }
+
+                lblMessage.Text = "Child added successfully!";
+            }
         }
     }
 }

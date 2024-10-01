@@ -77,6 +77,7 @@
     <Content Include="Crud\Login.aspx" />
     <Content Include="Crud\OrphanageCrud.aspx" />
     <Content Include="Crud\Signup.aspx" />
+    <Content Include="Crud\AddChild.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -115,6 +116,13 @@
     </Compile>
     <Compile Include="Crud\Signup.aspx.designer.cs">
       <DependentUpon>Signup.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Crud\AddChild.aspx.cs">
+      <DependentUpon>AddChild.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Crud\AddChild.aspx.designer.cs">
+      <DependentUpon>AddChild.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
