@@ -26,39 +26,57 @@ public partial class Login : System.Web.UI.Page
                     Response.Redirect("admin_crud.aspx");
                     return;
                 }
-                else
+
+                // Check Orphanage
+                string orphanageQuery = "SELECT orphanage_id FROM Orphanages WHERE email=@Email AND password=@Password";
+                using (SqlCommand cmd = new SqlCommand(orphanageQuery, conn))
                 {
-                    // Check Orphanage
-                    string orphanageQuery = "SELECT orphanage_id FROM Orphanages WHERE email=@Email AND password=@Password";
-                    using (SqlCommand cmd = new SqlCommand(orphanageQuery, conn))
+                    cmd.Parameters.Add(new SqlParameter("@Email", System.Data.SqlDbType.NVarChar) { Value = email });
+                    cmd.Parameters.Add(new SqlParameter("@Password", System.Data.SqlDbType.NVarChar) { Value = password });
+
+                    System.Diagnostics.Debug.WriteLine("Executing query for Orphanage with Email: " + email);
+                    object orphanageId = cmd.ExecuteScalar();
+
+                    if (orphanageId != null)
                     {
-                        cmd.Parameters.Add(new SqlParameter("@Email", System.Data.SqlDbType.NVarChar) { Value = email });
-                        cmd.Parameters.Add(new SqlParameter("@Password", System.Data.SqlDbType.NVarChar) { Value = password });
-
-                        System.Diagnostics.Debug.WriteLine("Executing query with Email: " + email + " and Password: " + password);
-                        object orphanageId = cmd.ExecuteScalar();
-
-                        if (orphanageId != null)
-                        {
-                            System.Diagnostics.Debug.WriteLine("Orphanage ID found: " + orphanageId.ToString());
-
-                            // Set an authentication cookie
-                            FormsAuthentication.SetAuthCookie(email, false);
-
-                            // Store orphanage ID in session for future use
-                            Session["OrphanageID"] = orphanageId.ToString();
-
-                            // Redirect to Orphanage CRUD page
-                            Response.Redirect("OrphanageCrud.aspx");
-                            return;
-                        }
-                        else
-                        {
-                            System.Diagnostics.Debug.WriteLine("No orphanage found for the provided credentials.");
-                            Response.Write("<script>alert('Invalid credentials');</script>");
-                        }
+                        System.Diagnostics.Debug.WriteLine("Orphanage ID found: " + orphanageId.ToString());
+                        FormsAuthentication.SetAuthCookie(email, false);
+                        Session["OrphanageID"] = orphanageId.ToString();
+                        Response.Redirect("OrphanageCrud.aspx");
+                        return;
+                    }
+                    else
+                    {
+                        System.Diagnostics.Debug.WriteLine("No orphanage found for the provided credentials.");
                     }
                 }
+
+                // Check Adopter
+                string adopterQuery = "SELECT adopter_id FROM Adopters WHERE email=@Email AND password=@Password";
+                using (SqlCommand cmd = new SqlCommand(adopterQuery, conn))
+                {
+                    cmd.Parameters.Add(new SqlParameter("@Email", System.Data.SqlDbType.NVarChar) { Value = email });
+                    cmd.Parameters.Add(new SqlParameter("@Password", System.Data.SqlDbType.NVarChar) { Value = password });
+
+                    System.Diagnostics.Debug.WriteLine("Executing query for Adopter with Email: " + email);
+                    object adopterId = cmd.ExecuteScalar();
+
+                    if (adopterId != null)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Adopter ID found: " + adopterId.ToString());
+                        FormsAuthentication.SetAuthCookie(email, false);
+                        Session["AdopterID"] = adopterId.ToString(); // Store Adopter ID in session
+                        Response.Redirect("AdopterCrud.aspx");
+                        return;
+                    }
+                    else
+                    {
+                        System.Diagnostics.Debug.WriteLine("No adopter found for the provided credentials.");
+                    }
+                }
+
+                // If no valid credentials were found
+                Response.Write("<script>alert('Invalid credentials');</script>");
             }
         }
         catch (Exception ex)
@@ -68,6 +86,5 @@ public partial class Login : System.Web.UI.Page
         }
 
         System.Diagnostics.Debug.WriteLine("Invalid credentials. Login failed.");
-        Response.Write("<script>alert('Invalid credentials');</script>");
     }
 }

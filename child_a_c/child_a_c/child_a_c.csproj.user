@@ -15,11 +15,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-<<<<<<< HEAD
           <StartPageUrl>Crud/Login.aspx</StartPageUrl>
-=======
-          <StartPageUrl>Crud/ApplicationRecords.aspx</StartPageUrl>
->>>>>>> f94fd0f878bbd8e344954edcf7212299db6a51cd
           <StartAction>SpecificPage</StartAction>
           <AspNetDebugging>True</AspNetDebugging>
           <SilverlightDebugging>False</SilverlightDebugging>

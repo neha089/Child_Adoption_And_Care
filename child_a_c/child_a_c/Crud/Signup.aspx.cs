@@ -51,14 +51,26 @@ public partial class Signup : System.Web.UI.Page
             conn.Open();
             if (userType == "Adopter")
             {
+                DateTime dob;
+                string dateFormat = "yyyy-MM-dd"; // Set the expected date format
+
+                // Try to parse the date of birth
+                if (!DateTime.TryParseExact(txtDateOfBirth.Text, dateFormat,
+                                             System.Globalization.CultureInfo.InvariantCulture,
+                                             System.Globalization.DateTimeStyles.None, out dob))
+                {
+                    // Handle the error, e.g., display a message to the user
+                    throw new Exception("Invalid date format. Please enter a valid date in the format YYYY-MM-DD.");
+                }
+
                 string query = @"INSERT INTO Adopters (first_name, last_name, password, date_of_birth, address, phone_number, email, marital_status, occupation, education_level) 
-                                 VALUES (@FirstName, @LastName, @Password, @DOB, @Address, @Phone, @Email, @MaritalStatus, @Occupation, @EducationLevel)";
+                     VALUES (@FirstName, @LastName, @Password, @DOB, @Address, @Phone, @Email, @MaritalStatus, @Occupation, @EducationLevel)";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@FirstName", txtFirstName.Text);
                     cmd.Parameters.AddWithValue("@LastName", txtLastName.Text);
                     cmd.Parameters.AddWithValue("@Password", txtPassword.Text);
-                    cmd.Parameters.AddWithValue("@DOB", txtDateOfBirth.Text);
+                    cmd.Parameters.AddWithValue("@DOB", dob); // Use the parsed DateTime object
                     cmd.Parameters.AddWithValue("@Address", txtAddress.Text);
                     cmd.Parameters.AddWithValue("@Phone", txtPhoneNumber.Text);
                     cmd.Parameters.AddWithValue("@Email", txtEmail.Text);
@@ -68,6 +80,8 @@ public partial class Signup : System.Web.UI.Page
                     cmd.ExecuteNonQuery();
                 }
             }
+
+
             else if (userType == "Orphanage")
             {
                 string query = @"INSERT INTO Orphanages (name, address, phone_number, email, contact_person, capacity, number_of_children, license_number, password) 
