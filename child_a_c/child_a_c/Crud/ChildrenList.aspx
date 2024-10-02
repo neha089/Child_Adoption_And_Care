@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="ChildrenList.aspx.cs" Inherits="ChildrenList" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="ChildrenList.aspx.cs" Inherits="ChildrenList" %> 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
@@ -39,7 +39,7 @@
             margin-bottom: 30px;
         }
 
-        h3, h4 {
+        h4 {
             color: #333;
             margin: 0;
         }
@@ -49,6 +49,13 @@
             margin: 5px 0;
         }
 
+        img.profile-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 20px;
+        }
 
         button {
             background-color: #28a745;
@@ -65,7 +72,6 @@
             transform: translateY(-2px);
         }
 
-        /* Responsive Design */
         @media (max-width: 768px) {
             .child-card {
                 flex-direction: column;
@@ -84,30 +90,29 @@
             <h1>Children List</h1>
             <asp:Label ID="lblMessage" runat="server" ForeColor="Red" Visible="false"></asp:Label>
             <asp:Repeater ID="rptChildren" runat="server">
-        <ItemTemplate>
-        <div class="child-card">
-            <div>
-                <h4><%# Eval("first_name") %> <%# Eval("last_name") %></h4>
-                <p>Date of Birth: <%# Eval("date_of_birth", "{0:MM/dd/yyyy}") %></p>
-                <p>Gender: <%# Eval("gender") %></p>
-                <p>Status: <%# Eval("status") %></p>
-                
-                <!-- Use a literal control to display notes conditionally -->
-                <asp:Literal ID="litNotes" runat="server" 
-                             Text='<%# Eval("notes") != DBNull.Value ? Eval("notes") : "N/A" %>' />
-            </div>
-            <%-- The adopt button only appears if the status is DBNull --%>
-            <asp:Button ID="btnAdopt" runat="server" Text="Adopt" 
-                         CommandArgument='<%# Eval("child_id") + ";" + Eval("orphanage_id") %>' 
-                         OnCommand="btnAdopt_Command" 
-                         Visible='<%# Eval("status") == DBNull.Value %>' />
-        </div>
-        </ItemTemplate>
-        </asp:Repeater>
+                <ItemTemplate>
+                    <div class="child-card">
+                        <div>
+<img class="profile-img" src='<%# ResolveUrl(Eval("profile_image").ToString()) %>' alt="Profile Image" />
+                        </div>
+                        <div>
+                            <h4><%# Eval("first_name") %> <%# Eval("last_name") %></h4>
+                            <p>Date of Birth: <%# Eval("date_of_birth", "{0:MM/dd/yyyy}") %></p>
+                            <p>Gender: <%# Eval("gender") %></p>
+                            <p>Status: <%# Eval("status") %></p>
+                            <asp:Literal ID="litNotes" runat="server" 
+                                         Text='<%# Eval("notes") != DBNull.Value ? Eval("notes") : "N/A" %>' />
+                        </div>
+                        <asp:Button ID="btnAdopt" runat="server" Text="Adopt" 
+                                    CommandArgument='<%# Eval("child_id") + ";" + Eval("orphanage_id") %>' 
+                                    OnCommand="btnAdopt_Command" 
+                                    Visible='<%# Eval("status") == DBNull.Value %>' />
+                    </div>
+                </ItemTemplate>
+            </asp:Repeater>
 
-        <asp:Button ID="btnBack" runat="server" Text="Back" CssClass="submit-button" OnClick="btnBack_Click" />
+            <asp:Button ID="btnBack" runat="server" Text="Back" CssClass="submit-button" OnClick="btnBack_Click" />
         </div>
-
     </form>
 </body>
 </html>
