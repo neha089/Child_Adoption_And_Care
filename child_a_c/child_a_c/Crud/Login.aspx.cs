@@ -28,21 +28,30 @@ public partial class Login : System.Web.UI.Page
                 }
 
                 // Check Orphanage
-                string orphanageQuery = "SELECT orphanage_id FROM Orphanages WHERE email=@Email AND password=@Password";
+                string orphanageQuery = "SELECT orphanage_id, name, address, phone_number, email, contact_person, capacity, number_of_children, license_number FROM Orphanages WHERE email=@Email AND password=@Password";
                 using (SqlCommand cmd = new SqlCommand(orphanageQuery, conn))
                 {
                     cmd.Parameters.Add(new SqlParameter("@Email", System.Data.SqlDbType.NVarChar) { Value = email });
                     cmd.Parameters.Add(new SqlParameter("@Password", System.Data.SqlDbType.NVarChar) { Value = password });
 
                     System.Diagnostics.Debug.WriteLine("Executing query for Orphanage with Email: " + email);
-                    object orphanageId = cmd.ExecuteScalar();
+                    SqlDataReader reader = cmd.ExecuteReader();
 
-                    if (orphanageId != null)
+                    if (reader.Read())
                     {
-                        System.Diagnostics.Debug.WriteLine("Orphanage ID found: " + orphanageId.ToString());
+                        System.Diagnostics.Debug.WriteLine("Orphanage ID found: " + reader["orphanage_id"].ToString());
                         FormsAuthentication.SetAuthCookie(email, false);
-                        Session["OrphanageID"] = orphanageId.ToString();
-                        Response.Redirect("OrphanageCrud.aspx");
+                        Session["OrphanageID"] = reader["orphanage_id"].ToString();
+                        Session["OrphanageName"] = reader["name"].ToString();
+                        Session["OrphanageAddress"] = reader["address"].ToString();
+                        Session["OrphanagePhone"] = reader["phone_number"].ToString();
+                        Session["OrphanageEmail"] = reader["email"].ToString();
+                        Session["OrphanageContactPerson"] = reader["contact_person"].ToString();
+                        Session["OrphanageCapacity"] = reader["capacity"].ToString();
+                        Session["OrphanageNumberOfChildren"] = reader["number_of_children"].ToString();
+                        Session["OrphanageLicenseNumber"] = reader["license_number"].ToString();
+
+                        Response.Redirect("OrphanageDashboard.aspx");
                         return;
                     }
                     else

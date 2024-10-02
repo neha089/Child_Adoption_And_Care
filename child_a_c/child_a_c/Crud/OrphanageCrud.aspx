@@ -23,9 +23,7 @@
 <body>
     <form id="form1" runat="server">
         <div>
-            <h3>Orphanage List</h3>
-            <asp:GridView ID="gvOrphanages" runat="server" AutoGenerateColumns="true" OnSelectedIndexChanged="gvOrphanages_SelectedIndexChanged"></asp:GridView>
-
+            
             <h3>Orphanage Details</h3>
             <asp:Label Text="Orphanage ID:" runat="server" />
             <asp:TextBox ID="txtOrphanageID" runat="server" ReadOnly="true" /><br />
