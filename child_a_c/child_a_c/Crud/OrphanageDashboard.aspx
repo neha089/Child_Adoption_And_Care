@@ -1,7 +1,6 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="OrphanageDashboard.aspx.cs" Inherits="child_a_c.Crud.OrphanageDashboard" %>
 
 <!DOCTYPE html>
-
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Orphanage Dashboard</title>
@@ -37,42 +36,36 @@
         ul {
             list-style-type: none;
             padding: 0;
-            margin: 0; /* Remove default margin from ul */
+            margin: 0;
         }
 
         li {
-            margin: 15px 0; /* Set margin below each button */
+            margin: 15px 0;
             text-align: center;
         }
 
-        a {
+        a, .logout-button {
             text-decoration: none;
             padding: 12px 20px;
             color: white;
-            background-color: #007BFF; /* Bootstrap Primary color */
+            background-color: #007BFF;
             border-radius: 5px;
             transition: background-color 0.3s;
-            display: inline-block; /* Ensure links behave like block elements */
-            border: none; /* Remove default border from button */
-            cursor: pointer; /* Change cursor to pointer */
+            display: inline-block;
+            border: none;
+            cursor: pointer;
         }
 
-        a:hover {
-            background-color: #0056b3; /* Darker shade on hover */
+        a:hover, .logout-button:hover {
+            background-color: #0056b3;
         }
 
         .logout-button {
-            padding: 12px 20px; /* Same padding as links */
-            background-color: #dc3545; /* Bootstrap Danger color */
-            border-radius: 5px; /* Rounded corners */
-            border: none; /* Remove border */
-            color: white; /* Text color */
-            cursor: pointer; /* Pointer cursor */
-            transition: background-color 0.3s; /* Transition effect */
+            background-color: #dc3545;
         }
 
         .logout-button:hover {
-            background-color: #c82333; /* Darker shade on hover */
+            background-color: #c82333;
         }
 
         footer {
@@ -80,6 +73,43 @@
             margin-top: 20px;
             font-size: 14px;
             color: #777;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .table th, .table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .table th {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        .status-btn {
+            margin-right: 5px;
+            padding: 5px 10px;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .accepted {
+            background-color: #28a745;
+        }
+
+        .rejected {
+            background-color: #dc3545;
+        }
+
+        .btn {
+            background-color: #007BFF;
         }
     </style>
 </head>
@@ -95,10 +125,28 @@
                     <asp:Button ID="btnLogout" runat="server" Text="Logout" OnClick="btnLogout_Click" CssClass="logout-button" />
                 </li>
             </ul>
+
+            <asp:Label ID="lblSuccessMessage" runat="server" Visible="false" ForeColor="Green" />
+            <asp:Label ID="lblErrorMessage" runat="server" Visible="false" ForeColor="Red" />
+
+            <asp:GridView ID="gvApplicationRecords" runat="server" AutoGenerateColumns="False" CssClass="table" OnRowCommand="OnRowCommand">
+                <Columns>
+                    <asp:BoundField DataField="application_id" HeaderText="Application ID" />
+                    <asp:BoundField DataField="adopter_name" HeaderText="Adopter Name" />
+                    <asp:BoundField DataField="child_id" HeaderText="Child ID" />
+                    <asp:BoundField DataField="application_date" HeaderText="Application Date" />
+                    <asp:BoundField DataField="status" HeaderText="Status" />
+                    <asp:TemplateField HeaderText="Actions">
+                        <ItemTemplate>
+                            <asp:Button ID="btnAccept" runat="server" CommandName="Accept" CommandArgument='<%# Eval("application_id") %>' CssClass="status-btn accepted" Text="Accept" />
+                            <asp:Button ID="btnReject" runat="server" CommandName="Reject" CommandArgument='<%# Eval("application_id") %>' CssClass="status-btn rejected" Text="Reject" />
+                            <asp:Button ID="btnViewDocuments" runat="server" CommandName="ViewDocuments" CommandArgument='<%# Eval("application_id") %>' CssClass="status-btn btn" Text="View Documents" />
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                </Columns>
+            </asp:GridView>
         </div>
-        <footer>
-            <p>&copy; 2024 Orphanage Management System. All Rights Reserved.</p>
-        </footer>
     </form>
+    <footer>Orphanage Child Adoption Platform</footer>
 </body>
 </html>
