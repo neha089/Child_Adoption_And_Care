@@ -74,8 +74,10 @@
     <Content Include="Crud\admin_crud.aspx" />
     <Content Include="Crud\AdopterCrud.aspx" />
     <Content Include="Crud\ChildCrud.aspx" />
+    <Content Include="Crud\ChildrenList.aspx" />
     <Content Include="Crud\Login.aspx" />
     <Content Include="Crud\OrphanageCrud.aspx" />
+    <Content Include="Crud\UserProfile.aspx" />
     <Content Include="Crud\Signup.aspx" />
     <Content Include="Crud\AddChild.aspx" />
     <Content Include="Web.config" />
@@ -96,6 +98,13 @@
       <DependentUpon>ChildCrud.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Crud\ChildrenList.aspx.cs">
+      <DependentUpon>ChildrenList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Crud\ChildrenList.aspx.designer.cs">
+      <DependentUpon>ChildrenList.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Crud\Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -109,6 +118,13 @@
     </Compile>
     <Compile Include="Crud\OrphanageCrud.aspx.designer.cs">
       <DependentUpon>OrphanageCrud.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Crud\UserProfile.aspx.cs">
+      <DependentUpon>UserProfile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Crud\UserProfile.aspx.designer.cs">
+      <DependentUpon>UserProfile.aspx</DependentUpon>
     </Compile>
     <Compile Include="Crud\Signup.aspx.cs">
       <DependentUpon>Signup.aspx</DependentUpon>

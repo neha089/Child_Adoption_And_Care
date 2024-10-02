@@ -1,75 +1,108 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="AdopterCrud.aspx.cs" Inherits="child_a_c.Crud.AdopterCrud" %>
-
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="AdopterCrud.aspx.cs" Inherits="AdopterCrud" %>
 <!DOCTYPE html>
-
 <html xmlns="http://www.w3.org/1999/xhtml">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" /> 
 <head runat="server">
-    <title>Manage Adopters</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        h2 {
-            color: #4CAF50;
-        }
-        label {
-            display: inline-block;
-            margin: 10px 0 5px;
-        }
-        input[type="text"], input[type="date"] {
-            width: 300px;
-            padding: 8px;
-            margin-bottom: 10px;
-        }
-        input[type="submit"], button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            border: none;
+    <title>Orphanages</title>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+}
+
+.card, .child-card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px 0;
+    padding: 20px;
+    transition: transform 0.2s;
+}
+
+.card:hover, .child-card:hover {
+    transform: scale(1.05);
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+h3, h4 {
+    color: #333;
+}
+
+p {
+    color: #666;
+}
+
+img.profile-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-top: 10px;
+}
+
+button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #218838;
+}
+.top-right {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+  .profile-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            color: #333;
             cursor: pointer;
+            text-decoration: none;
         }
-        input[type="submit"]:hover, button:hover {
-            background-color: #45a049;
+
+        .profile-icon:hover {
+            color: #218838;
         }
-    </style>
+</style>
 </head>
 <body>
     <form id="form1" runat="server">
-        <div>
-            <h2>Manage Adopters</h2>
-
-            <h3>Adopter Details</h3>
-
-            <asp:Label Text="First Name:" runat="server" />
-            <asp:TextBox ID="txtFirstName" runat="server" /><br />
-
-            <asp:Label Text="Last Name:" runat="server" />
-            <asp:TextBox ID="txtLastName" runat="server" /><br />
-
-            <asp:Label Text="Date of Birth:" runat="server" />
-            <asp:TextBox ID="txtDateOfBirth" runat="server" TextMode="Date" /><br />
-
-            <asp:Label Text="Address:" runat="server" />
-            <asp:TextBox ID="txtAddress" runat="server" /><br />
-
-            <asp:Label Text="Phone Number:" runat="server" />
-            <asp:TextBox ID="txtPhoneNumber" runat="server" /><br />
-
-            <asp:Label Text="Email:" runat="server" />
-            <asp:TextBox ID="txtEmail" runat="server" /><br />
-
-            <asp:Label Text="Marital Status:" runat="server" />
-            <asp:TextBox ID="txtMaritalStatus" runat="server" /><br />
-
-            <asp:Label Text="Occupation:" runat="server" />
-            <asp:TextBox ID="txtOccupation" runat="server" /><br />
-
-            <asp:Label Text="Education Level:" runat="server" />
-            <asp:TextBox ID="txtEducationLevel" runat="server" /><br />
-
-            <asp:Button ID="btnSave" runat="server" Text="Save" OnClick="btnSave_Click" /><br />
-            <asp:Label ID="lblMessage" runat="server" ForeColor="Green" />
+         <div class="top-right">
+            <a href="UserProfile.aspx" class="profile-icon" title="Profile">
+            <i class="fas fa-user-circle"></i> <!-- Font Awesome profile icon -->
+        </a>
+        </div>
+        <div class="container">
+            <h1>List of Orphanages</h1>
+            <asp:Repeater ID="rptOrphanages" runat="server">
+            <ItemTemplate>
+            <div class="card">
+            <h3><%# Eval("name") %></h3>
+            <p><strong>Address:</strong> <%# Eval("address") %></p>
+            <p><strong>Phone:</strong> <%# Eval("phone_number") %></p>
+            <p><strong>Email:</strong> <%# Eval("email") %></p>
+            <asp:Button ID="btnSelectOrphanage" runat="server" Text="View Children" 
+                        CommandArgument='<%# Eval("orphanage_id") %>' OnCommand="btnSelectOrphanage_Command" />
+            </div>
+            </ItemTemplate>
+            </asp:Repeater>
         </div>
     </form>
 </body>

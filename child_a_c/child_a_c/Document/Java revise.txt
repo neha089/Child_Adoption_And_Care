@@ -1,0 +1,30 @@
+Java revise:
+
+
+****OOPS concepts****
+
+1. Class, Object
+
+2. Inheritance(code reusability)
+	Single -> one parent - one child
+	Multilevel -> one parent - child 1(subclass/intermediate super class) - child 2
+	Hierarchical -> multiple classes are derived from one super class
+	Hybrid -> can have combination of different types of inheritance
+	Multiple -> due to ambiguity not support in Java by classes
+
+3. Encapsulation/Data Hiding
+	Variables(data) and Methods are wrapped in a single unit called a class.
+	Variable and Methods are hidden. They can be accessible only via objects.
+	To achieve it, make Variables private and Methods(getters/setters) public and access it via objects.
+
+4. Polymorphism 
+	Ability of an object to take many forms.
+	1. static polymorphism(Method Overloading)
+	2. dynamic polymorphism(Method Overriding)
+
+5. Abstraction
+	Hiding implementation details and shows only essential ones. complexity hidden.
+	2 ways to achieve abstraction in Java
+		1. Abstract classes - 0 to 100%
+		2. Interfaces - full or 100%
+	
