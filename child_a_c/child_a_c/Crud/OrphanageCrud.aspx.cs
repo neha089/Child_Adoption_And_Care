@@ -29,17 +29,7 @@ namespace child_a_c.Crud
             {
                 SqlCommand cmd = new SqlCommand("SELECT * FROM Orphanages", conn);
                 conn.Open();
-                gvOrphanages.DataSource = cmd.ExecuteReader();
-                gvOrphanages.DataBind();
             }
-        }
-
-        protected void gvOrphanages_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            GridViewRow row = gvOrphanages.SelectedRow;
-            txtOrphanageID.Text = row.Cells[0].Text;
-            txtName.Text = row.Cells[1].Text;
-            // Set other orphanage details
         }
 
         protected void btnSaveChild_Click(object sender, EventArgs e)
