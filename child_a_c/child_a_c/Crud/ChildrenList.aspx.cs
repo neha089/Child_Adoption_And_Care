@@ -36,7 +36,7 @@ public partial class ChildrenList : System.Web.UI.Page
         {
             string query = @"
             SELECT c.child_id, c.first_name, c.last_name, c.date_of_birth, c.gender, 
-                ar.status, ar.notes, c.orphanage_id  -- Ensure orphanage_id is included
+                ar.status, ar.notes,c.profile_image, c.orphanage_id  -- Ensure orphanage_id is included
             FROM Children c
             LEFT JOIN ApplicationRecords ar ON c.child_id = ar.child_id AND ar.adopter_id = @adopter_id  
             WHERE c.orphanage_id = @orphanageId";
