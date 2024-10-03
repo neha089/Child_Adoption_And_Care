@@ -86,6 +86,33 @@ public partial class Login : System.Web.UI.Page
                     }
                 }
 
+                // Check Donor
+                string donorQuery = "SELECT donor_id, donor_name FROM Donors WHERE email=@Email AND password=@Password";
+                using (SqlCommand cmd = new SqlCommand(donorQuery, conn))
+                {
+                    cmd.Parameters.Add(new SqlParameter("@Email", System.Data.SqlDbType.NVarChar) { Value = email });
+                    cmd.Parameters.Add(new SqlParameter("@Password", System.Data.SqlDbType.NVarChar) { Value = password });
+
+                    System.Diagnostics.Debug.WriteLine("Executing query for Donor with Email: " + email);
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            System.Diagnostics.Debug.WriteLine("Donor ID found: " + reader["donor_id"].ToString());
+                            FormsAuthentication.SetAuthCookie(email, false);
+                            Session["DonorID"] = reader["donor_id"].ToString();
+                            Session["DonorName"] = reader["donor_name"].ToString();
+
+                            Response.Redirect("OrphanageList.aspx");
+                            return;
+                        }
+                        else
+                        {
+                            System.Diagnostics.Debug.WriteLine("No donor found for the provided credentials.");
+                        }
+                    }
+                }
+
                 // If no valid credentials were found
                 Response.Write("<script>alert('Invalid credentials');</script>");
             }
