@@ -13,6 +13,7 @@
             <asp:ListItem Text="Select" Value=""></asp:ListItem>
             <asp:ListItem Text="Adopter" Value="Adopter"></asp:ListItem>
             <asp:ListItem Text="Orphanage" Value="Orphanage"></asp:ListItem>
+            <asp:ListItem Text="Donor" Value="Donor"></asp:ListItem>
         </asp:DropDownList>
 
         <!-- Adopter Form -->
@@ -61,6 +62,19 @@
             <asp:TextBox ID="txtLicenseNumber" runat="server" /><br />
             <label>Password:</label>
             <asp:TextBox ID="txtOrphanagePassword" runat="server" TextMode="Password" /><br />
+        </div>
+
+        <!-- Donor Form -->
+        <div id="donorForm" runat="server" visible="false">
+            <h3>Donor Information</h3>
+            <label>Donor Name:</label>
+            <asp:TextBox ID="txtDonorName" runat="server" /><br />
+            <label>Phone Number:</label>
+            <asp:TextBox ID="txtDonorPhone" runat="server" /><br />
+            <label>Email:</label>
+            <asp:TextBox ID="txtDonorEmail" runat="server" /><br />
+            <label>Password:</label>
+            <asp:TextBox ID="txtDonorPassword" runat="server" TextMode="Password" /><br />
         </div>
 
         <asp:Button ID="btnSignUp" runat="server" Text="Sign Up" OnClick="btnSignUp_Click" />
