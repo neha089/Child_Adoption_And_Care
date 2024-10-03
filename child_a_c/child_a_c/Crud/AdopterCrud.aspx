@@ -30,6 +30,19 @@
             text-align: center;
             color: #333;
         }
+        .profile-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            color: #333;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .profile-icon:hover {
+            color: #218838;
+        }
 
         .slideshow-container {
             position: relative;
@@ -115,6 +128,12 @@
 </head>
 <body>
     <form id="form1" runat="server">
+        <div class="top-right">
+            <a href="UserProfile.aspx" class="profile-icon" title="Profile">
+                <i class="fas fa-user-circle"></i>
+            </a>
+            <asp:Button ID="btnLogout" runat="server" Text="Logout" OnClick="btnLogout_Click" CssClass="logout-button" />
+        </div>
         <div class="container">
             <h1>List of Orphanages</h1>
             <asp:Repeater ID="rptOrphanages" runat="server">

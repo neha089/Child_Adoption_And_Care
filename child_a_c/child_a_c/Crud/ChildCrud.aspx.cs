@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Web.UI.WebControls; // Ensure this is included
 using child_a_c.Crud;
 using System.Web.Security;
+using System.Data;
 
 namespace child_a_c.Crud
 {
@@ -13,78 +14,114 @@ namespace child_a_c.Crud
         {
             if (!IsPostBack)
             {
-                LoadChildrenRecords();
+                int orphanageId = Convert.ToInt32(Request.QueryString["orphanage_id"]);
+                LoadChildren(orphanageId); 
             }
         }
 
-        private void LoadChildrenRecords()
+        private void LoadChildren(int orphanageId)
         {
             string connectionString = ConfigurationManager.ConnectionStrings["Database1"].ConnectionString;
+
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                SqlCommand cmd = new SqlCommand("SELECT * FROM Children", conn);
-                conn.Open();
-                gvChildren.DataSource = cmd.ExecuteReader();
-                gvChildren.DataBind();
+                string query = @"
+            SELECT c.child_id, c.first_name, c.last_name, c.date_of_birth, c.gender, c.profile_image, c.orphanage_id 
+            FROM Children c
+            WHERE c.orphanage_id = @orphanageId";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@orphanageId", orphanageId);
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                if (dt.Rows.Count == 0)
+                {
+                    lblMessage.Text = "No children found in this orphanage.";
+                    lblMessage.Visible = true;
+                    rptChildren.Visible = false;
+                }
+                else
+                {
+                    rptChildren.DataSource = dt;
+                    rptChildren.DataBind();
+                    lblMessage.Visible = false;
+                    rptChildren.Visible = true;
+                }
             }
         }
 
-        protected void gvChildren_SelectedIndexChanged(object sender, EventArgs e)
+        protected void btnEdit_Command(object sender, CommandEventArgs e)
         {
-            GridViewRow row = gvChildren.SelectedRow;
-            txtChildID.Text = row.Cells[0].Text;
-            txtFirstName.Text = row.Cells[1].Text;
-            txtLastName.Text = row.Cells[2].Text;
-            txtDateOfBirth.Text = row.Cells[3].Text;
-            txtGender.Text = row.Cells[4].Text;
-            txtOrphanageID.Text = row.Cells[5].Text;
+            int childId = Convert.ToInt32(e.CommandArgument);
+
+            string connectionString = ConfigurationManager.ConnectionStrings["Database1"].ConnectionString;
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = "SELECT first_name, last_name, date_of_birth, gender FROM Children WHERE child_id = @childId";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@childId", childId);
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    // Populate the edit form with the selected child's data
+                    hfChildId.Value = childId.ToString();
+                    txtFirstName.Text = reader["first_name"].ToString();
+                    txtLastName.Text = reader["last_name"].ToString();
+                    txtDateOfBirth.Text = Convert.ToDateTime(reader["date_of_birth"]).ToString("yyyy-MM-dd");
+                    ddlGender.SelectedValue = reader["gender"].ToString();
+
+                    // Show the edit form
+                    editForm.Style["display"] = "block";
+                }
+
+                reader.Close();
+            }
         }
 
         protected void btnSave_Click(object sender, EventArgs e)
         {
+            int childId = Convert.ToInt32(hfChildId.Value);
+
             string connectionString = ConfigurationManager.ConnectionStrings["Database1"].ConnectionString;
+
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                SqlCommand cmd;
-                if (string.IsNullOrEmpty(txtChildID.Text))
-                {
-                    cmd = new SqlCommand("INSERT INTO Children (first_name, last_name, date_of_birth, gender, orphanage_id) VALUES (@FirstName, @LastName, @DateOfBirth, @Gender, @OrphanageID)", conn);
-                }
-                else
-                {
-                    cmd = new SqlCommand("UPDATE Children SET first_name = @FirstName, last_name = @LastName, date_of_birth = @DateOfBirth, gender = @Gender, orphanage_id = @OrphanageID WHERE child_id = @ChildID", conn);
-                    cmd.Parameters.AddWithValue("@ChildID", txtChildID.Text);
-                }
+                string query = @"
+                UPDATE Children 
+                SET first_name = @firstName, last_name = @lastName, date_of_birth = @dateOfBirth, gender = @gender
+                WHERE child_id = @childId";
 
-                cmd.Parameters.AddWithValue("@FirstName", txtFirstName.Text);
-                cmd.Parameters.AddWithValue("@LastName", txtLastName.Text);
-                cmd.Parameters.AddWithValue("@DateOfBirth", txtDateOfBirth.Text);
-                cmd.Parameters.AddWithValue("@Gender", txtGender.Text);
-                cmd.Parameters.AddWithValue("@OrphanageID", txtOrphanageID.Text);
-
-                conn.Open();
-                cmd.ExecuteNonQuery();
-                LoadChildrenRecords();
-            }
-        }
-        protected void handleLogout(object sender, EventArgs e)
-        {
-            FormsAuthentication.SignOut();
-            Response.Redirect("~/Crud/Login.aspx");
-        }
-        public void CreateChild(string email, string username, string password)
-        {
-            string connectionString = ConfigurationManager.ConnectionStrings["Database1"].ConnectionString;
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                SqlCommand cmd = new SqlCommand("INSERT INTO Children (email, name, password) VALUES (@Email, @Name, @Password)", conn);
-                cmd.Parameters.AddWithValue("@Email", email);
-                cmd.Parameters.AddWithValue("@Name", username);
-                cmd.Parameters.AddWithValue("@Password", password);
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@firstName", txtFirstName.Text);
+                cmd.Parameters.AddWithValue("@lastName", txtLastName.Text);
+                cmd.Parameters.AddWithValue("@dateOfBirth", Convert.ToDateTime(txtDateOfBirth.Text));
+                cmd.Parameters.AddWithValue("@gender", ddlGender.SelectedValue);
+                cmd.Parameters.AddWithValue("@childId", childId);
 
                 conn.Open();
                 cmd.ExecuteNonQuery();
             }
+
+            // Hide the edit form and reload the children list
+            editForm.Style["display"] = "none";
+            int orphanageId = Convert.ToInt32(Request.QueryString["orphanage_id"]);
+            LoadChildren(orphanageId);
+        }
+
+        protected void btnCancel_Click(object sender, EventArgs e)
+        {
+            // Hide the edit form without saving changes
+            editForm.Style["display"] = "none";
+        }
+
+        protected void btnBack_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("OrphanageDashboard.aspx");
         }
     }
 }

@@ -61,7 +61,9 @@
             <asp:TextBox ID="txtLicenseNumber" runat="server" /><br />
             <label>Password:</label>
             <asp:TextBox ID="txtOrphanagePassword" runat="server" TextMode="Password" /><br />
-        </div>
+           <p><label>Upload License:</label><asp:FileUpload ID="fuLicence" runat="server" CssClass="file-upload" /></p>
+            <p><label>Upload ID Proof:</label><asp:FileUpload ID="fuIdProof" runat="server" CssClass="file-upload" /></p>
+       </div>
 
         <asp:Button ID="btnSignUp" runat="server" Text="Sign Up" OnClick="btnSignUp_Click" />
     </form>

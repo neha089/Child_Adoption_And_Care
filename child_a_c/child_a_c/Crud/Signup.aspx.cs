@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.IO;
 using System.Web.UI.WebControls;
 
 public partial class Signup : System.Web.UI.Page
 {
+    private int orphanageId;
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
@@ -44,7 +46,7 @@ public partial class Signup : System.Web.UI.Page
     protected void btnSignUp_Click(object sender, EventArgs e)
     {
         string userType = ddlUserType.SelectedValue;
-         string connectionString = ConfigurationManager.ConnectionStrings["Database1"].ConnectionString;
+        string connectionString = ConfigurationManager.ConnectionStrings["Database1"].ConnectionString;
 
         using (SqlConnection conn = new SqlConnection(connectionString))
         {
@@ -84,8 +86,10 @@ public partial class Signup : System.Web.UI.Page
 
             else if (userType == "Orphanage")
             {
+                // Insert orphanage information into the database
                 string query = @"INSERT INTO Orphanages (name, address, phone_number, email, contact_person, capacity, number_of_children, license_number, password) 
-                                 VALUES (@Name, @Address, @Phone, @Email, @ContactPerson, @Capacity, @NumChildren, @LicenseNumber, @Password)";
+                 OUTPUT INSERTED.orphanage_id VALUES (@Name, @Address, @Phone, @Email, @ContactPerson, @Capacity, @NumChildren, @LicenseNumber, @Password)";
+
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@Name", txtOrphanageName.Text);
@@ -97,12 +101,52 @@ public partial class Signup : System.Web.UI.Page
                     cmd.Parameters.AddWithValue("@NumChildren", txtNumChildren.Text);
                     cmd.Parameters.AddWithValue("@LicenseNumber", txtLicenseNumber.Text);
                     cmd.Parameters.AddWithValue("@Password", txtOrphanagePassword.Text);
-                    cmd.ExecuteNonQuery();
+
+                    // Execute the command and retrieve the inserted orphanage ID
+                    orphanageId = (int)cmd.ExecuteScalar(); // Get the new orphanage ID
                 }
+
+                // Save uploaded documents
+                SaveDocument(fuLicence, orphanageId, "License", conn);
+                SaveDocument(fuIdProof, orphanageId, "ID Proof", conn);
             }
         }
 
         // Redirect to Login
         Response.Redirect("Login.aspx");
+    }
+    private void SaveDocument(FileUpload fileUpload, int orphanageId, string documentType, SqlConnection conn)
+    {
+        if (fileUpload.HasFile)
+        {
+            string folderPath = Server.MapPath("~/Documents/"); // Ensure this folder exists
+
+            // Check if the directory exists; if not, create it
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            // Create the full path to save the uploaded file
+            string fileName = Path.GetFileName(fileUpload.FileName);
+            string uploadPath = Path.Combine(folderPath, fileName);
+
+            // Save the file to the server
+            fileUpload.SaveAs(uploadPath);
+
+            // Insert document details into the OrphanageDocuments table
+            string documentQuery = "INSERT INTO OrphanageDocuments (orphanage_id, document_type, document_name, document_url, upload_date) " +
+                                   "VALUES (@orphanage_id, @document_type, @document_name, @document_url, @upload_date)";
+            using (SqlCommand cmd = new SqlCommand(documentQuery, conn))
+            {
+                cmd.Parameters.AddWithValue("@orphanage_id", orphanageId);
+                cmd.Parameters.AddWithValue("@document_type", documentType);
+                cmd.Parameters.AddWithValue("@document_name", fileName);
+                cmd.Parameters.AddWithValue("@document_url", uploadPath);
+                cmd.Parameters.AddWithValue("@upload_date", DateTime.Now);
+
+                cmd.ExecuteNonQuery();
+            }
+        }
     }
 }

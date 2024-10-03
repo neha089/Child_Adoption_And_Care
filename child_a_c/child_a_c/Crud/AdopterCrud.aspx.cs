@@ -61,4 +61,11 @@ public partial class AdopterCrud : System.Web.UI.Page
         // Redirect to ChildrenList.aspx with orphanage_id as a query parameter
         Response.Redirect($"ChildrenList.aspx?orphanage_id={orphanageId}");
     }
+    protected void btnLogout_Click(object sender, EventArgs e)
+    {
+        // Clear session data and redirect to login
+        Session.Clear();
+        Session.Abandon();
+        Response.Redirect("Login.aspx");
+    }
 }
