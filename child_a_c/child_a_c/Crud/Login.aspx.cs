@@ -35,28 +35,30 @@ public partial class Login : System.Web.UI.Page
                     cmd.Parameters.Add(new SqlParameter("@Password", System.Data.SqlDbType.NVarChar) { Value = password });
 
                     System.Diagnostics.Debug.WriteLine("Executing query for Orphanage with Email: " + email);
-                    SqlDataReader reader = cmd.ExecuteReader();
-
-                    if (reader.Read())
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        System.Diagnostics.Debug.WriteLine("Orphanage ID found: " + reader["orphanage_id"].ToString());
-                        FormsAuthentication.SetAuthCookie(email, false);
-                        Session["OrphanageID"] = reader["orphanage_id"].ToString();
-                        Session["OrphanageName"] = reader["name"].ToString();
-                        Session["OrphanageAddress"] = reader["address"].ToString();
-                        Session["OrphanagePhone"] = reader["phone_number"].ToString();
-                        Session["OrphanageEmail"] = reader["email"].ToString();
-                        Session["OrphanageContactPerson"] = reader["contact_person"].ToString();
-                        Session["OrphanageCapacity"] = reader["capacity"].ToString();
-                        Session["OrphanageNumberOfChildren"] = reader["number_of_children"].ToString();
-                        Session["OrphanageLicenseNumber"] = reader["license_number"].ToString();
 
-                        Response.Redirect("OrphanageDashboard.aspx");
-                        return;
-                    }
-                    else
-                    {
-                        System.Diagnostics.Debug.WriteLine("No orphanage found for the provided credentials.");
+                        if (reader.Read())
+                        {
+                            System.Diagnostics.Debug.WriteLine("Orphanage ID found: " + reader["orphanage_id"].ToString());
+                            FormsAuthentication.SetAuthCookie(email, false);
+                            Session["OrphanageID"] = reader["orphanage_id"].ToString();
+                            Session["OrphanageName"] = reader["name"].ToString();
+                            Session["OrphanageAddress"] = reader["address"].ToString();
+                            Session["OrphanagePhone"] = reader["phone_number"].ToString();
+                            Session["OrphanageEmail"] = reader["email"].ToString();
+                            Session["OrphanageContactPerson"] = reader["contact_person"].ToString();
+                            Session["OrphanageCapacity"] = reader["capacity"].ToString();
+                            Session["OrphanageNumberOfChildren"] = reader["number_of_children"].ToString();
+                            Session["OrphanageLicenseNumber"] = reader["license_number"].ToString();
+
+                            Response.Redirect("OrphanageDashboard.aspx");
+                            return;
+                        }
+                        else
+                        {
+                            System.Diagnostics.Debug.WriteLine("No orphanage found for the provided credentials.");
+                        }
                     }
                 }
 
@@ -76,12 +78,38 @@ public partial class Login : System.Web.UI.Page
                         FormsAuthentication.SetAuthCookie(email, false);
                         Session["AdopterID"] = adopterId.ToString(); // Store Adopter ID in session
                         Response.Redirect("AdopterCrud.aspx");
-                        Session["AdopterID"] = adopterId;
                         return;
                     }
                     else
                     {
                         System.Diagnostics.Debug.WriteLine("No adopter found for the provided credentials.");
+                    }
+                }
+
+                // Check Donor
+                string donorQuery = "SELECT donor_id, donor_name FROM Donors WHERE email=@Email AND password=@Password";
+                using (SqlCommand cmd = new SqlCommand(donorQuery, conn))
+                {
+                    cmd.Parameters.Add(new SqlParameter("@Email", System.Data.SqlDbType.NVarChar) { Value = email });
+                    cmd.Parameters.Add(new SqlParameter("@Password", System.Data.SqlDbType.NVarChar) { Value = password });
+
+                    System.Diagnostics.Debug.WriteLine("Executing query for Donor with Email: " + email);
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            System.Diagnostics.Debug.WriteLine("Donor ID found: " + reader["donor_id"].ToString());
+                            FormsAuthentication.SetAuthCookie(email, false);
+                            Session["DonorID"] = reader["donor_id"].ToString();
+                            Session["DonorName"] = reader["donor_name"].ToString();
+
+                            Response.Redirect("OrphanageList.aspx");
+                            return;
+                        }
+                        else
+                        {
+                            System.Diagnostics.Debug.WriteLine("No donor found for the provided credentials.");
+                        }
                     }
                 }
 
