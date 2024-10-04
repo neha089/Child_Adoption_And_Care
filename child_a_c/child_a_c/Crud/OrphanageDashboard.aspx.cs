@@ -22,10 +22,37 @@ namespace child_a_c.Crud
                 else
                 {
                     string orphanageId = Session["OrphanageID"]?.ToString();
+
+                    DisplayTotalDonations(orphanageId);
                     LoadOrphanageImages(orphanageId);
 
                     // Load application records
                     LoadApplicationRecords();
+                }
+            }
+        }
+        private void DisplayTotalDonations(string orphanageId)
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["Database1"].ConnectionString;
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = "SELECT ISNULL(SUM(amount), 0) AS TotalDonations FROM Donations WHERE orphanage_id = @orphanageId";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@orphanageId", orphanageId);
+
+                try
+                {
+                    conn.Open();
+                    object result = cmd.ExecuteScalar();
+                    decimal totalDonations = (result != null) ? Convert.ToDecimal(result) : 0;
+
+                    // Use InnerText instead of Text for HtmlGenericControl
+                    lblTotalDonations.Text = $"Total Donations: ${totalDonations}";
+                }
+                catch (Exception ex)
+                {
+                    lblTotalDonations.Text = "Error fetching total donations.";
                 }
             }
         }

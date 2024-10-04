@@ -214,7 +214,11 @@
     </script>
 </head>
 <body onload="showSlides()">
+
     <form id="form1" runat="server" method="post">
+        <asp:Label ID="lblTotalDonations" runat="server" style="text-align:center;   margin-left: 650px;
+    font-weight: bold;"></asp:Label>
+
         <div class="top-right">
         <a href="OrphanProfile.aspx" class="profile-icon" title="Profile">
           <i class="fas fa-user-circle"></i>
@@ -225,6 +229,7 @@
         <div class="container">
             <h2>Orphanage Dashboard</h2>
             <h3>Welcome, <%= Session["OrphanageName"] ?? "Orphanage" %>!</h3>
+
               <div class="slideshow-container">
       <asp:Repeater ID="rptOrphanageImages" runat="server">
           <ItemTemplate>
