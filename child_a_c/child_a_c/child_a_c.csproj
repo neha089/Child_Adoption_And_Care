@@ -73,6 +73,7 @@
     </Content>
     <Content Include="Crud\admin_crud.aspx" />
     <Content Include="Crud\AdopterCrud.aspx" />
+    <Content Include="Crud\AdoptionHistory.aspx" />
     <Content Include="Crud\ChildCrud.aspx" />
     <Content Include="Crud\ChildrenList.aspx" />
     <Content Include="Crud\Login.aspx" />
@@ -95,6 +96,13 @@
     <Compile Include="Crud\AdopterCrud.aspx.cs">
       <DependentUpon>AdopterCrud.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Crud\AdoptionHistory.aspx.cs">
+      <DependentUpon>AdoptionHistory.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Crud\AdoptionHistory.aspx.designer.cs">
+      <DependentUpon>AdoptionHistory.aspx</DependentUpon>
     </Compile>
     <Compile Include="Crud\ChildCrud.aspx.cs">
       <DependentUpon>ChildCrud.aspx</DependentUpon>
