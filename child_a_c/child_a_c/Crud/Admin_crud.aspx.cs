@@ -9,16 +9,22 @@ public partial class admin_crud : System.Web.UI.Page
     {
         if (!IsPostBack)
         {
-            // Check if deleteId is present in the query string
             if (Request.QueryString["deleteId"] != null)
             {
                 int orphanageId = Convert.ToInt32(Request.QueryString["deleteId"]);
                 DeleteOrphanage(orphanageId);
             }
 
-            // Load orphanages after deletion or on initial load
             LoadOrphanages();
         }
+    }
+
+    // Logout button click handler
+    protected void Logout_Click(object sender, EventArgs e)
+    {
+        // Clear session and redirect to the login page
+        Session.Abandon();
+        Response.Redirect("login.aspx");
     }
 
     private void LoadOrphanages()
