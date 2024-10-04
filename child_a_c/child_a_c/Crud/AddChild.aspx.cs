@@ -101,5 +101,9 @@ namespace child_a_c.Crud
             }
             return null; // No file uploaded
         }
+        protected void btnBack_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("Orphanagedashboard.aspx");
+        }
     }
 }

@@ -11,7 +11,10 @@
     <form id="form1" runat="server">
         <div class="container">
             <h1 class="my-4">Admin Dashboard</h1>
-
+             <div class="d-flex justify-content-between align-items-center my-4">
+     <h1>Admin Dashboard</h1>
+     <asp:Button ID="btnLogout" runat="server" Text="Logout" CssClass="btn btn-danger" OnClick="Logout_Click" />
+ </div>
             <h2>Orphanages</h2>
             <div class="row">
                 <asp:Repeater ID="OrphanageRepeater" runat="server">

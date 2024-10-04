@@ -72,7 +72,9 @@
             <asp:FileUpload ID="fuDocument" runat="server" /><br />
 
             <asp:Button ID="btnAddChild" runat="server" Text="Add Child" OnClick="btnAddChild_Click" /><br />
-            <asp:Label ID="lblMessage" runat="server" ForeColor="Green" />
+            <asp:Label ID="lblMessage" runat="server" ForeColor="Green" /><br />
+                      <asp:Button ID="btnBack" runat="server" Text="Back" CssClass="submit-button" OnClick="btnBack_Click" />
+
         </div>
     </form>
 </body>

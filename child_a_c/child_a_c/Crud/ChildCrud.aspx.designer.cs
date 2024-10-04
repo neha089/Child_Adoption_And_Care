@@ -156,5 +156,7 @@ namespace Crud
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button delete;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl editForm; // If using a div
+
     }
 }

@@ -81,6 +81,7 @@
     <Content Include="Crud\UserProfile.aspx" />
     <Content Include="Crud\Signup.aspx" />
     <Content Include="Crud\AddChild.aspx" />
+    <Content Include="Crud\ViewAdopterDocs.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -147,6 +148,13 @@
     </Compile>
     <Compile Include="Crud\AddChild.aspx.designer.cs">
       <DependentUpon>AddChild.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Crud\ViewAdopterDocs.aspx.cs">
+      <DependentUpon>ViewAdopterDocs.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Crud\ViewAdopterDocs.aspx.designer.cs">
+      <DependentUpon>ViewAdopterDocs.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
