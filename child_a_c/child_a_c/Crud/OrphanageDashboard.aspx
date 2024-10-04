@@ -249,7 +249,7 @@
         <asp:TextBox ID="txtDescription" runat="server" TextMode="MultiLine" Rows="3" placeholder="Enter image description..." style="width: 95%; padding: 10px; margin-top: 10px;"></asp:TextBox>
     </li>
     <li>
-        <asp:Button ID="btnUpload" runat="server" Text="Upload" CssClass="btn-button" />
+        <asp:Button ID="btnUpload" runat="server" Text="Upload" CssClass="btn-button" onClick="btnUpload_Click"/>
     </li>
     <li>
         <asp:Label ID="lblUploadMessage" runat="server" Visible="false" style="color: green; font-weight: bold;"></asp:Label>

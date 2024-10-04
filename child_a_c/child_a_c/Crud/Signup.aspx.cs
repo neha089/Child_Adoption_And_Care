@@ -18,6 +18,9 @@ public partial class Signup : System.Web.UI.Page
 
     protected void ddlUserType_SelectedIndexChanged(object sender, EventArgs e)
     {
+        adopterForm.Visible = false;
+        orphanageForm.Visible = false;
+        donorForm.Visible = false;
         ShowHideForms();
     }
 
@@ -35,6 +38,11 @@ public partial class Signup : System.Web.UI.Page
         {
             adopterForm.Visible = false;
             orphanageForm.Visible = true;
+        }
+        else if (userType == "Donor")
+        {
+            adopterForm.Visible = false;
+            donorForm.Visible = true;
         }
         else
         {
@@ -110,8 +118,22 @@ public partial class Signup : System.Web.UI.Page
                 SaveDocument(fuLicence, orphanageId, "License", conn);
                 SaveDocument(fuIdProof, orphanageId, "ID Proof", conn);
             }
-        }
+            else if (userType == "Donor")
+            {
+                string query = @"INSERT INTO Donors (donor_name, phone_number, email, password) 
+                                 VALUES (@DonorName, @Phone, @Email, @Password)";
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@DonorName", txtDonorName.Text);
+                    cmd.Parameters.AddWithValue("@Phone", txtDonorPhone.Text);
+                    cmd.Parameters.AddWithValue("@Email", txtDonorEmail.Text);
+                    cmd.Parameters.AddWithValue("@Password", txtDonorPassword.Text);
+                    cmd.ExecuteNonQuery();
+                }
 
+            }
+        }
+    
         // Redirect to Login
         Response.Redirect("Login.aspx");
     }

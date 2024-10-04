@@ -116,7 +116,13 @@
             <asp:Button ID="btnSubmit" runat="server" Text="Submit Application" CssClass="submit-button" OnClick="btnSubmit_Click" />
             <asp:Button ID="btnBack" runat="server" Text="Back" CssClass="back-button submit-button" OnClick="btnBack_Click" />
 
+<<<<<<< HEAD
             <asp:Label ID="lblSuccessMessage" runat="server" Visible="false"></asp:Label>
+=======
+            <asp:Label ID="lblMessage" runat="server" Visible="false"></asp:Label>
+            <asp:Label ID="lblSuccessMessage" runat="server" Text="" Visible="false" CssClass="alert alert-success"></asp:Label>
+
+>>>>>>> cbb2e951f8266138eb8dcfef72a184899c71df26
         </div>
     </form>
 </body>
